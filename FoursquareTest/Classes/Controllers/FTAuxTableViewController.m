@@ -101,8 +101,11 @@
     
     FTVenueTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        ///cell = [[[FTVenueTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID] autorelease];
-        cell = [[[FTVenueTableCell alloc] initWithVenueData:nil reuseIdentifier:cellID] autorelease];
+        //cell = [[[FTVenueTableCell alloc] initWithVenueData:nil reuseIdentifier:cellID] autorelease];
+        
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"FTVenueTableCell" owner:self options:nil];
+        cell = [topLevelObjects objectAtIndex:0];
+        
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         
@@ -135,6 +138,9 @@
     }
     
     [cell updateWithVenueData:nil];
+    
+    if (row == 1)
+        cell.imgvSpecial.hidden = NO;
     
     return cell;
 }

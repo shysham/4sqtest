@@ -8,8 +8,9 @@
 
 #import "FTViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "MKMapView+Zooming.h"
 
-@interface FTViewController () <UISearchDisplayDelegate, UISearchBarDelegate>
+@interface FTViewController () <UISearchDisplayDelegate, UISearchBarDelegate, MKMapViewDelegate>
 - (void) setupScreen;
 - (void) cleanUp;
 
@@ -54,6 +55,48 @@
 
 
 #pragma mark -
+#pragma mark Map view stuff
+- (MKAnnotationView *)mapView:(MKMapView *)mv viewForAnnotation:(id <MKAnnotation>)annotation
+{
+    MKAnnotationView *pinView = (MKAnnotationView *)[mv dequeueReusableAnnotationViewWithIdentifier:@"pinView"];
+    
+    if (!pinView) {
+        pinView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"pinView"] autorelease];
+        pinView.image = [UIImage imageNamed:@"mappin-blue.png"];
+        pinView.frame = CGRectMake(-30, 0, 70, 67.5);
+        pinView.canShowCallout = NO;
+        
+        UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        pinView.rightCalloutAccessoryView = rightButton;
+        
+    } else {
+        pinView.annotation = annotation;
+    }
+    if (annotation == mv.userLocation){
+        return nil;
+    }
+    
+    return pinView;
+}
+
+- (void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    if (!userLocation)
+        return;
+    
+    [mapView setCenterCoordinate:userLocation.coordinate zoomLevel:14 animated:YES];
+    
+    // Add an annotation
+    MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+    point.coordinate = userLocation.coordinate;
+    point.title = @"Where am I?";
+    point.subtitle = @"I'm here!!!";
+    
+    [self.mapView addAnnotation:point];
+}
+
+
+#pragma mark -
 #pragma mark Action handlers
 - (void) cancelPressed:(id)sender
 {
@@ -88,9 +131,11 @@
             setBackgroundImage:[[UIImage imageNamed:@"cancel-bg-pressed.png"] resizableImageWithCapInsets:insets]
             forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
     
-    self.mapView.showsUserLocation = YES;
     self.mapView.userInteractionEnabled = NO;
     self.mapView.zoomEnabled = YES;
+    self.mapView.scrollEnabled = NO;
+    self.mapView.showsUserLocation = YES;
+    self.mapView.userTrackingMode = YES;
     /*
     [self.mapView.userLocation addObserver:self
                                 forKeyPath:@"location"
@@ -98,6 +143,7 @@
                                    context:NULL];*/
 }
 
+/*
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([self.mapView showsUserLocation]) {
@@ -105,6 +151,7 @@
         [self.mapView setCenterCoordinate:self.mapView.userLocation.location.coordinate animated:YES];
     }
 }
+ */
 
 - (void) cleanUp
 {

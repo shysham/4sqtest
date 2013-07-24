@@ -9,18 +9,14 @@
 #import "FTVenueTableCell.h"
 
 @interface FTVenueTableCell()
-@property (nonatomic, retain) UILabel *labelName;
-@property (nonatomic, retain) UILabel *labelAddress;
-@property (nonatomic, retain) UILabel *labelDistance;
-@property (nonatomic, retain) UIImageView *imgvAux;
-@property (nonatomic, retain) UILabel *labelAux;
 
 - (void) setupLayoutWithVenueData:(NSDictionary*)aVenue;
 
 @end
 
 @implementation FTVenueTableCell
-@synthesize labelName = _labelName, labelAddress = _labelAddress, labelDistance = _labelDistance, imgvAux = _imgvAux, labelAux = _labelAux;
+@synthesize labelName = _labelName, labelAddress = _labelAddress, labelDistance = _labelDistance;
+@synthesize imgvCategory = _imgvCategory, imgvSpecial = _imgvSpecial, imgvAux = _imgvAux, labelAux = _labelAux;
 
 - (id) initWithVenueData:(NSDictionary*)aVenue reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -49,6 +45,8 @@
     [_labelDistance release];
     [_labelAux release];
     [_imgvAux release];
+    [_imgvSpecial release];
+    [_imgvCategory release];
     
     [super dealloc];
 }
@@ -58,6 +56,36 @@
     [self setupLayoutWithVenueData:aVenue];
 }
 
+- (void) setupLayoutWithVenueData:(NSDictionary*)aVenue
+{
+    [self.imgvCategory setBackgroundColor:[UIColor clearColor]];
+    [self.imgvCategory setImage:[UIImage imageNamed:@"category-none.png"]];
+    
+    self.labelName.text = @"Marina's Office";
+    
+    [self.labelAddress setFont:[UIFont fontWithName:FT_APPRNS_VENUE_ADDRESS_FONT_NAME size:FT_APPRNS_VENUE_ADDRESS_FONT_SIZE]];
+    self.labelAddress.text = [@"Jagodina, Bresje bb" uppercaseString];
+    
+    [self.labelDistance setNumberOfLines:0];
+    [self.labelDistance setFont:[UIFont fontWithName:FT_APPRNS_VENUE_INFO_FONT_NAME size:FT_APPRNS_VENUE_INFO_FONT_SIZE]];
+    self.labelDistance.text = @"0.2 км";
+    CGSize size = [self.labelDistance.text sizeWithFont:self.labelDistance.font];
+    [self.labelDistance setFrame:CGRectMake(self.labelDistance.frame.origin.x,
+                                            self.labelDistance.frame.origin.y, size.width, self.labelDistance.frame.size.height)];
+    
+    CGRect rect = self.imgvAux.frame;
+    rect.origin.x = self.labelDistance.frame.origin.x + self.labelDistance.frame.size.width + FT_APPRNS_VENUE_CELL_INFO_TEXT_SPACING;
+    [self.imgvAux setFrame:rect];
+    
+    rect = self.labelAux.frame;
+    self.labelAux.text = @"4";
+    rect.origin.x = self.imgvAux.frame.origin.x + self.imgvAux.frame.size.width;
+    [self.labelAux setFrame:rect];
+    
+    self.imgvSpecial.hidden = YES;  // by default
+}
+
+/*
 - (void) setupLayoutWithVenueData:(NSDictionary*)aVenue
 {
     if (!self.labelName)    self.labelName = [[[UILabel alloc] init] autorelease];
@@ -111,6 +139,7 @@
     
     [self.contentView addSubview:self.labelName];
 }
+ */
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

@@ -13,6 +13,12 @@
 
 #define FT_FSQAPI_VENUES                            @"venues"
 
+typedef enum _FTFSQAPIANNOTATIONTYPE {
+    FSQANNTP_UNKNOWN        =   0,
+    FSQANNTP_BLUEs,
+    FSQANNTP_ORANGE
+} FTFSQAPIANNOTATIONTYPE;
+
 
 // Appearance
 #define FT_APPRNS_CELL_HEIGHT                       (70.f)
@@ -26,9 +32,10 @@
 #define FT_APPRNS_VENUE_NAME_FONT_SIZE              (12.f)
 #define FT_APPRNS_VENUE_NAME_FONT_COLOR             [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.0]
 #define FT_APPRNS_VENUE_ADDRESS_FONT_NAME           @"Gotham-Book"
-#define FT_APPRNS_VENUE_ADDRESS_FONT_SIZE           (12.f)
+#define FT_APPRNS_VENUE_ADDRESS_FONT_SIZE           (10.f)
 #define FT_APPRNS_VENUE_ADDRESS_FONT_COLOR          [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0]
-#define FT_APPRNS_VENUE_INFO_FONT_NAME              @"Verdana"
-#define FT_APPRNS_VENUE_INFO_FONT_SIZE              (12.f)
+#define FT_APPRNS_VENUE_INFO_FONT_NAME              @"Gotham-Book"
+#define FT_APPRNS_VENUE_INFO_FONT_SIZE              (10.f)
 #define FT_APPRNS_VENUE_INFO_FONT_COLOR             [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1.0]
+#define FT_APPRNS_VENUE_CELL_INFO_TEXT_SPACING      (4.f)
 
