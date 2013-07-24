@@ -51,5 +51,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Gotham-Book.otf</string>
+	</array>
 </dict>
 </plist>

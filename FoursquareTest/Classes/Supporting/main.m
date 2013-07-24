@@ -3,7 +3,7 @@
 //  FoursquareTest
 //
 //  Created by Egor Dovzhenko on 23.07.13.
-//  Copyright (c) 2013 Wisebit, Ltd. All rights reserved.
+//  Copyright (c) 2013 Egor Dovzhenko. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  FoursquareTest
+
+  Created by Egor Dovzhenko on 23.07.13.
+  Copyright (c) 2013 Egor Dovzhenko. All rights reserved.
+*/
+
+"skTitleScreenCheckIn" = "Check In";
+"skTitleSearchBar" = "Search Places";
+"skTitleButtonCancel" = "Cancel";
+"skTitleDefaultDummy" = "I am a dummy text";
+

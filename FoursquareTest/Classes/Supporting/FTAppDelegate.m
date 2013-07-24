@@ -3,29 +3,36 @@
 //  FoursquareTest
 //
 //  Created by Egor Dovzhenko on 23.07.13.
-//  Copyright (c) 2013 Wisebit, Ltd. All rights reserved.
+//  Copyright (c) 2013 Egor Dovzhenko. All rights reserved.
 //
 
 #import "FTAppDelegate.h"
-
 #import "FTViewController.h"
 
 @implementation FTAppDelegate
 
+@synthesize navigationController = _navigationController;
+
 - (void)dealloc
 {
     [_window release];
-    [_viewController release];
+    [_navigationController release];
+    
     [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
-    self.viewController = [[[FTViewController alloc] initWithNibName:@"FTViewController" bundle:nil] autorelease];
-    self.window.rootViewController = self.viewController;
+    
+    FTViewController *viewController = [[FTViewController alloc] initWithNibName:@"FTViewController" bundle:nil];
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    
+    [viewController release];
+    
+    self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
