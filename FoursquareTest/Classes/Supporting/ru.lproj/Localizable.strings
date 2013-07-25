@@ -13,3 +13,6 @@
 "skTitleMeters" = "м";
 "skTitleConnectionLost" = "Вероятно, соединение с Интернетом прервано.";
 "skTitleLoading" = "Загрузка...";
+"skTitleDuplicates" = "Дубликаты";
+"skTitleProposeChanges" = "Предложить изменения";
+

@@ -16,6 +16,9 @@
 @property (nonatomic, retain) IBOutlet UIImageView *imgvAux;
 @property (nonatomic, retain) IBOutlet UIImageView *imgvSpecial;
 @property (nonatomic, retain) IBOutlet UILabel *labelAux;
+@property (nonatomic, retain) IBOutlet UIImageView *frontView;
+@property (nonatomic, retain) IBOutlet UIButton *buttonDups;
+@property (nonatomic, retain) IBOutlet UIButton *buttonChanges;
 
 - (id) initWithVenueData:(NSDictionary*)aVenue reuseIdentifier:(NSString *)reuseIdentifier;
 - (void) updateWithVenueData:(NSDictionary*)aVenue;

@@ -10,7 +10,9 @@
 #import "UIImageView+AFNetworking.h"
 #import "FTDataManager.h"
 
-@interface FTVenueTableCell()
+@interface FTVenueTableCell(){
+    BOOL    _cellAlreadySetUp;
+}
 @property (nonatomic, retain) NSString *venueID;
 - (void) setupLayoutWithVenueData:(NSDictionary*)aVenue;
 
@@ -20,11 +22,15 @@
 @synthesize venueID = _venueID;
 @synthesize labelName = _labelName, labelAddress = _labelAddress, labelDistance = _labelDistance;
 @synthesize imgvCategory = _imgvCategory, imgvSpecial = _imgvSpecial, imgvAux = _imgvAux, labelAux = _labelAux;
+@synthesize buttonDups = _buttonDups, buttonChanges = _buttonChanges;
+
+@synthesize frontView = _frontView;
 
 - (id) initWithVenueData:(NSDictionary*)aVenue reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
+        _cellAlreadySetUp = NO;
         [self setupLayoutWithVenueData:aVenue];
     }
     
@@ -35,6 +41,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        _cellAlreadySetUp = NO;
         [self setupLayoutWithVenueData:nil];
     }
     
@@ -51,6 +58,9 @@
     [_imgvAux release];
     [_imgvSpecial release];
     [_imgvCategory release];
+    [_frontView release];
+    [_buttonDups release];
+    [_buttonChanges release];
     
     [super dealloc];
 }
@@ -62,6 +72,31 @@
 
 - (void) setupLayoutWithVenueData:(NSDictionary*)aVenue
 {
+    if (!_cellAlreadySetUp){
+        [self setBackgroundColor:[UIColor clearColor]];
+        [self.frontView setBackgroundColor:[UIColor clearColor]];
+        
+        // Setup hidden buttons appearance. Need to do programmatically, 'cause I have only trimmed asset, and I
+        //  need to stretch it properly, not like that idiotic XIB does.
+        UIEdgeInsets insets = UIEdgeInsetsMake(.0, FT_APPRNS_HIDDEN_BUTTON_INSET, .0, FT_APPRNS_HIDDEN_BUTTON_INSET);
+        [self.buttonDups setBackgroundColor:[UIColor clearColor]];
+        [self.buttonDups setBackgroundImage:[[UIImage imageNamed:@"filter_selector_background_off.png"] resizableImageWithCapInsets:insets] forState:UIControlStateNormal];
+        [self.buttonDups.titleLabel setFont:[UIFont fontWithName:FT_APPRNS_HIDDEN_BUTTON_FONT_NAME size:FT_APPRNS_HIDDEN_BUTTON_FONT_SIZE]];
+        [self.buttonDups.titleLabel setNumberOfLines:2];
+        [self.buttonDups.titleLabel setTextAlignment:UITextAlignmentCenter];
+        [self.buttonDups setTitle:[NSLocalizedString(@"skTitleDuplicates", nil) uppercaseString] forState:UIControlStateNormal];
+        [self.buttonDups setTitleColor:FT_APPRNS_HIDDEN_BUTTON_FONT_COLOR forState:UIControlStateNormal];
+        
+        [self.buttonChanges setBackgroundColor:[UIColor clearColor]];
+        [self.buttonChanges setBackgroundImage:[[UIImage imageNamed:@"filter_selector_background_off.png"] resizableImageWithCapInsets:insets] forState:UIControlStateNormal];
+        [self.buttonChanges.titleLabel setFont:[UIFont fontWithName:FT_APPRNS_HIDDEN_BUTTON_FONT_NAME size:FT_APPRNS_HIDDEN_BUTTON_FONT_SIZE]];
+        [self.buttonChanges.titleLabel setNumberOfLines:2];
+        [self.buttonChanges.titleLabel setTextAlignment:UITextAlignmentCenter];
+        [self.buttonChanges setTitle:[NSLocalizedString(@"skTitleProposeChanges", nil) uppercaseString] forState:UIControlStateNormal];
+        [self.buttonChanges setTitleColor:FT_APPRNS_HIDDEN_BUTTON_FONT_COLOR forState:UIControlStateNormal];
+    }
+    
+
     // Check if cell UI is dirty
     NSString *newID = [aVenue valueForKey:kFSQDicVenueID];
     
@@ -72,14 +107,16 @@
         [self.imgvCategory setImage:[UIImage imageNamed:@"category-none.png"]];
     }
     
-    // Name / title
-    self.labelName.text = [aVenue objectForKey:kFSQDicVenueName];
-    self.labelName.textColor = FT_APPRNS_VENUE_NAME_FONT_COLOR;
-    
-    
-    // Address
-    [self.labelAddress setFont:[UIFont fontWithName:FT_APPRNS_VENUE_ADDRESS_FONT_NAME size:FT_APPRNS_VENUE_ADDRESS_FONT_SIZE]];
-    self.labelAddress.textColor = FT_APPRNS_VENUE_ADDRESS_FONT_COLOR;
+    if (!_cellAlreadySetUp){
+        // Name / title
+        self.labelName.text = [aVenue objectForKey:kFSQDicVenueName];
+        self.labelName.textColor = FT_APPRNS_VENUE_NAME_FONT_COLOR;
+        
+        
+        // Address
+        [self.labelAddress setFont:[UIFont fontWithName:FT_APPRNS_VENUE_ADDRESS_FONT_NAME size:FT_APPRNS_VENUE_ADDRESS_FONT_SIZE]];
+        self.labelAddress.textColor = FT_APPRNS_VENUE_ADDRESS_FONT_COLOR;
+    }
     
     NSString *fuzzed = [aVenue valueForKeyPath:kFSQDicVenueAddressFuzzed];
     NSString *addr = [aVenue valueForKeyPath:kFSQDicVenueAddress];
@@ -101,9 +138,12 @@
     NSNumber *dist = [aVenue valueForKeyPath:kFSQDicVenueDistance];
     NSString *distStr = (dist ? [FTUtilities niceReadableDistanceWithMeters:[dist floatValue]] : nil);
     
-    [self.labelDistance setNumberOfLines:0];
-    [self.labelDistance setFont:[UIFont fontWithName:FT_APPRNS_VENUE_INFO_FONT_NAME size:FT_APPRNS_VENUE_INFO_FONT_SIZE]];
-    self.labelDistance.textColor = FT_APPRNS_VENUE_INFO_FONT_COLOR;
+    if (!_cellAlreadySetUp){
+        [self.labelDistance setNumberOfLines:0];
+        [self.labelDistance setFont:[UIFont fontWithName:FT_APPRNS_VENUE_INFO_FONT_NAME size:FT_APPRNS_VENUE_INFO_FONT_SIZE]];
+        self.labelDistance.textColor = FT_APPRNS_VENUE_INFO_FONT_COLOR;
+    }
+    
     self.labelDistance.text = (distStr ? distStr : @"");
     CGSize size = [self.labelDistance.text sizeWithFont:self.labelDistance.font];
     [self.labelDistance setFrame:CGRectMake(self.labelDistance.frame.origin.x,
@@ -150,6 +190,9 @@
             [self.imgvCategory setImageWithURL:[NSURL URLWithString:iconPath] placeholderImage:[UIImage imageNamed:@"venue-img-bg.png"]];
         }
     }
+    
+    if (!_cellAlreadySetUp)
+        _cellAlreadySetUp = YES;
 }
 
 /*

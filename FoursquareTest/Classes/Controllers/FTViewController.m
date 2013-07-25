@@ -18,12 +18,13 @@
 #import "FTAnnotationView.h"
 
 @interface FTViewController () <UISearchDisplayDelegate, UISearchBarDelegate, MKMapViewDelegate, EGORefreshTableHeaderDelegate,
-                                UITableViewDataSource, UITableViewDelegate>{
+                                UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>{
     EGORefreshTableHeaderView*      _refreshHeaderView;
     BOOL                            _reloading;
 }
 
 @property (nonatomic, assign) CLLocationCoordinate2D lastKnownCoordinate;
+@property (nonatomic, retain) NSIndexPath *openedCellIndexPath;
 @property (nonatomic, retain) NSArray *venues;
 
 - (void) reloadTableViewDataSource;
@@ -37,11 +38,14 @@
 - (UITableViewCell*) getLoadingCell;
 
 - (void) cancelPressed:(id)sender;
+- (void) buttonDupPressed:(id)sender;
+- (void) buttonChangesPressed:(id)sender;
 @end
 
 @implementation FTViewController
 @synthesize searchBar = _searchBar, mapView = _mapView, tableView = _tableView, lastKnownCoordinate = _lastKnownCoordinate;
 @synthesize venues = _venues;
+@synthesize openedCellIndexPath = _openedCellIndexPath;
 
 - (void) dealloc
 {
@@ -184,6 +188,16 @@
     NSLog(@"Dummy: Cancel button pressed on main screen");
 }
 
+- (void) buttonDupPressed:(id)sender
+{
+    NSLog(@"Dummy: Duplication button inside cell pressed");
+}
+
+- (void) buttonChangesPressed:(id)sender
+{
+    NSLog(@"Dummy: Make changes button inside cell pressed");
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -210,8 +224,8 @@
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"FTVenueTableCell" owner:self options:nil];
         FTVenueTableCell *cell = [topLevelObjects objectAtIndex:0];
         
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        //cell.accessoryType = UITableViewCellAccessoryNone;
+        //cell.selectionStyle = UITableViewCellSelectionStyleGray;
         
         UIImage *rowBackground;
         UIImage *selectionBackground;
@@ -237,11 +251,29 @@
             selectionBackground = [UIImage imageNamed:@"table-cell-middle-sel.png"];
         }
         
-        [cell setBackgroundView:[[[UIImageView alloc] initWithImage:rowBackground] autorelease]];
-        [cell setSelectedBackgroundView:[[[UIImageView alloc] initWithImage:selectionBackground] autorelease]];
+        [cell.frontView setImage:rowBackground];
+        [cell.frontView setHighlightedImage:selectionBackground];
         
         // If venue IDs are the same for the cell, category image will not be updated
         [cell updateWithVenueData:[self.venues objectAtIndex:indexPath.row]];
+        
+        //Setting up swipers to show/hide cell options underneath
+        UISwipeGestureRecognizer *swiperRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightSwipe:)];
+        [swiperRight setDirection:UISwipeGestureRecognizerDirectionRight];
+        [swiperRight setDelegate:self];
+        [cell addGestureRecognizer:swiperRight];
+        [swiperRight release];
+        
+        UISwipeGestureRecognizer *swiperLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleLeftSwipe:)];
+        [swiperLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+        [swiperLeft setDelegate:self];
+        [cell addGestureRecognizer:swiperLeft];
+        [swiperLeft release];
+        
+        // Setting up buttons on underneath layer of the cell (shit, when I will go to sleep?)
+        [cell.buttonDups addTarget:self action:@selector(buttonDupPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.buttonChanges addTarget:self action:@selector(buttonChangesPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
         
         return cell;
     }
@@ -251,12 +283,72 @@
     }
 }
 
+///////////////////////// LAB ///////////////////////////
+
+#pragma mark - 
+#pragma mark Swipers stuff
+-(void)handleRightSwipe:(UISwipeGestureRecognizer*)swiper
+{
+    [self aux_handleSwipeRight:YES withSwiper:swiper];
+}
+
+
+-(void)handleLeftSwipe:(UISwipeGestureRecognizer*)swiper
+{
+    [self aux_handleSwipeRight:NO withSwiper:swiper];
+}
+
+- (void) aux_handleSwipeRight:(BOOL)isRight withSwiper:(UISwipeGestureRecognizer*)swiper
+{
+    UIView *view = ((FTVenueTableCell*)swiper.view).frontView;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:((FTVenueTableCell*)swiper.view)];
+    
+    if (self.openedCellIndexPath && indexPath.row != self.openedCellIndexPath.row){
+        [self shiftView:((FTVenueTableCell*)[self.tableView cellForRowAtIndexPath:self.openedCellIndexPath]).frontView toXOffset:0.f animated:NO];
+    }
+    
+    CGFloat actOffs = view.frame.origin.x;
+    BOOL closing = (actOffs >= FT_APPRNS_FRONT_VIEW_INITIAL_OFFSET || actOffs <= -FT_APPRNS_FRONT_VIEW_INITIAL_OFFSET);
+    
+    if (isRight){
+        [self shiftView:view toXOffset:(closing ? 0 : (actOffs <= -FT_APPRNS_FRONT_VIEW_INITIAL_OFFSET ? 0 : FT_APPRNS_CELL_SHIFT_DELTA)) animated:YES];
+    }
+    else {
+        [self shiftView:view toXOffset:(closing ? 0 : (actOffs >= FT_APPRNS_FRONT_VIEW_INITIAL_OFFSET ? 0 : -FT_APPRNS_CELL_SHIFT_DELTA)) animated:YES];
+    }
+
+    self.openedCellIndexPath = (closing ? nil : indexPath);
+
+    // This one needed to prevent visual effect of simultaneous button "pressing" that lay underneath.
+    //  It is a visual effect, based on cell selection. Thus we need to switch off selection when options are shown and
+    //  turn it back on when cell is showing us "face" again.
+    [(FTVenueTableCell*)swiper.view setSelectionStyle:(closing ? UITableViewCellSelectionStyleGray : UITableViewCellSelectionStyleNone)];
+}
+
+
+- (void) shiftView:(UIView*)view toXOffset:(CGFloat)xOffs animated:(BOOL)animated
+{
+    if (animated){
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        [UIView setAnimationDuration:FT_APPRNS_CELL_SHIFT_ANIMATION_DURATION];
+    }
+    
+    [view setTransform:CGAffineTransformMakeTranslation(xOffs, 0)];
+
+    if (animated)
+        [UIView commitAnimations];
+}
+
+/////////////////////////////////////////////////////////
+
+#pragma mark -
+#pragma mark Table view stuff
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ((self.venues && [self.venues count]) ? FT_APPRNS_CELL_HEIGHT : FT_APPRNS_CELL_LOADING_HEIGHT);
 }
-
-#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -321,6 +413,12 @@
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
 	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+    // Closing open cell, if any
+    if (self.openedCellIndexPath){
+        [self shiftView:((FTVenueTableCell*)[self.tableView cellForRowAtIndexPath:self.openedCellIndexPath]).frontView toXOffset:0.f animated:YES];
+        self.openedCellIndexPath = nil;
+    }
 }
 
 - (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -353,7 +451,7 @@
 #pragma mark Service
 
 - (void) setup
-{
+{    
     [self.navigationController setNavigationBarHidden:NO];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationbar.png"] forBarMetrics:UIBarMetricsDefault];
     self.title = NSLocalizedString(@"skTitleScreenCheckIn", nil);
@@ -425,6 +523,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     
     _mapView.delegate = nil;
+    [_openedCellIndexPath release];     _openedCellIndexPath = nil;
     
     [_venues release];  _venues = nil;
     

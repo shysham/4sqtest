@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F76736117A19CB000C14E89 /* filter_selector_background_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F76735917A19CB000C14E89 /* filter_selector_background_off.png */; };
+		5F76736217A19CB000C14E89 /* filter_selector_background_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F76735A17A19CB000C14E89 /* filter_selector_background_off@2x.png */; };
+		5F76736317A19CB000C14E89 /* swipe-bg-bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F76735B17A19CB000C14E89 /* swipe-bg-bottom.png */; };
+		5F76736417A19CB000C14E89 /* swipe-bg-bottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F76735C17A19CB000C14E89 /* swipe-bg-bottom@2x.png */; };
+		5F76736517A19CB000C14E89 /* swipe-bg-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F76735D17A19CB000C14E89 /* swipe-bg-middle.png */; };
+		5F76736617A19CB000C14E89 /* swipe-bg-middle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F76735E17A19CB000C14E89 /* swipe-bg-middle@2x.png */; };
+		5F76736717A19CB000C14E89 /* swipe-bg-top.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F76735F17A19CB000C14E89 /* swipe-bg-top.png */; };
+		5F76736817A19CB000C14E89 /* swipe-bg-top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F76736017A19CB000C14E89 /* swipe-bg-top@2x.png */; };
 		5FDAD190179EAB4F00D81935 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDAD18F179EAB4F00D81935 /* UIKit.framework */; };
 		5FDAD192179EAB4F00D81935 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDAD191179EAB4F00D81935 /* Foundation.framework */; };
 		5FDAD194179EAB4F00D81935 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDAD193179EAB4F00D81935 /* CoreGraphics.framework */; };
@@ -111,6 +119,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F76735917A19CB000C14E89 /* filter_selector_background_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter_selector_background_off.png; sourceTree = "<group>"; };
+		5F76735A17A19CB000C14E89 /* filter_selector_background_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "filter_selector_background_off@2x.png"; sourceTree = "<group>"; };
+		5F76735B17A19CB000C14E89 /* swipe-bg-bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swipe-bg-bottom.png"; sourceTree = "<group>"; };
+		5F76735C17A19CB000C14E89 /* swipe-bg-bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swipe-bg-bottom@2x.png"; sourceTree = "<group>"; };
+		5F76735D17A19CB000C14E89 /* swipe-bg-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swipe-bg-middle.png"; sourceTree = "<group>"; };
+		5F76735E17A19CB000C14E89 /* swipe-bg-middle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swipe-bg-middle@2x.png"; sourceTree = "<group>"; };
+		5F76735F17A19CB000C14E89 /* swipe-bg-top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swipe-bg-top.png"; sourceTree = "<group>"; };
+		5F76736017A19CB000C14E89 /* swipe-bg-top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swipe-bg-top@2x.png"; sourceTree = "<group>"; };
 		5FDAD18C179EAB4F00D81935 /* FoursquareTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoursquareTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FDAD18F179EAB4F00D81935 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5FDAD191179EAB4F00D81935 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -338,6 +354,14 @@
 		5FDAD1B6179ECEAC00D81935 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5F76735917A19CB000C14E89 /* filter_selector_background_off.png */,
+				5F76735A17A19CB000C14E89 /* filter_selector_background_off@2x.png */,
+				5F76735B17A19CB000C14E89 /* swipe-bg-bottom.png */,
+				5F76735C17A19CB000C14E89 /* swipe-bg-bottom@2x.png */,
+				5F76735D17A19CB000C14E89 /* swipe-bg-middle.png */,
+				5F76735E17A19CB000C14E89 /* swipe-bg-middle@2x.png */,
+				5F76735F17A19CB000C14E89 /* swipe-bg-top.png */,
+				5F76736017A19CB000C14E89 /* swipe-bg-top@2x.png */,
 				5FDAD2D817A0DC4000D81935 /* alert-warning.png */,
 				5FDAD2D917A0DC4000D81935 /* alert-warning@2x.png */,
 				5FDAD2BB179F891600D81935 /* category-none.png */,
@@ -653,6 +677,14 @@
 				5FDAD2CE179FBB4600D81935 /* Bresje, Jagodina.gpx in Resources */,
 				5FDAD2DA17A0DC4000D81935 /* alert-warning.png in Resources */,
 				5FDAD2DB17A0DC4000D81935 /* alert-warning@2x.png in Resources */,
+				5F76736117A19CB000C14E89 /* filter_selector_background_off.png in Resources */,
+				5F76736217A19CB000C14E89 /* filter_selector_background_off@2x.png in Resources */,
+				5F76736317A19CB000C14E89 /* swipe-bg-bottom.png in Resources */,
+				5F76736417A19CB000C14E89 /* swipe-bg-bottom@2x.png in Resources */,
+				5F76736517A19CB000C14E89 /* swipe-bg-middle.png in Resources */,
+				5F76736617A19CB000C14E89 /* swipe-bg-middle@2x.png in Resources */,
+				5F76736717A19CB000C14E89 /* swipe-bg-top.png in Resources */,
+				5F76736817A19CB000C14E89 /* swipe-bg-top@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

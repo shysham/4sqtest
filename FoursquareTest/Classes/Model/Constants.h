@@ -72,11 +72,16 @@ typedef enum _FTFSQAPIICONTYPE {
 #define FT_APPRNS_MAP_HEIGHT                        (200.f)
 #define FT_APPRNS_MAP_DEFAULT_ZOOM_LEVEL            (9)
 #define FT_APPRNS_CANCEL_BUTTON_INSET               (5.f)
+#define FT_APPRNS_HIDDEN_BUTTON_INSET               (8.f)
 #define FT_APPRNS_SEARCHFIELD_INSET                 (16.f)
 #define FT_APPRNS_PULL2REFRESH_SLIDE_TIME           (.3f)
 #define FT_APPRNS_SEARCHBAR_ICON_X_OFFSET           (-12.f)
 #define FT_APPRNS_SEARCHBAR_TEXT_X_OFFSET           (-6.f)
 #define FT_APPRNS_LOCATION_NEAR_RADIUS              (1500)
+#define FT_APPRNS_HIDDEN_BUTTON_FONT_NAME           @"Gotham-Book"
+#define FT_APPRNS_HIDDEN_BUTTON_FONT_SIZE           (12.f)
+#define FT_APPRNS_HIDDEN_BUTTON_FONT_COLOR          [UIColor colorWithRed:(143.f/255.f) green:(135.f/255.f) blue:(126.f/255.f) alpha:1.0]
+#define FT_APPRNS_FRONT_VIEW_INITIAL_OFFSET         (15.f)
 
 #define FT_APPRNS_VENUE_CELL_TEXT_SPACING           (4.f)
 #define FT_APPRNS_VENUE_NAME_FONT_NAME              @"Helvetica"
@@ -101,6 +106,10 @@ typedef enum _FTFSQAPIICONTYPE {
 #define FT_APPRNS_NOTIFICATION_TEXT_FONT_NAME       @"Gotham-Book"
 #define FT_APPRNS_NOTIFICATION_SHOW_DURATION        (4.f)
 #define FT_APPRNS_NOTIFICATION_DISAPPEARANCE_TIME   (1.f)
+
+#define FT_APPRNS_CELL_SHIFT_DELTA                  (320.f)
+#define FT_APPRNS_CELL_SHIFT_ANIMATION_DURATION     (0.3f)
+#define FT_APPRNS_CELL_BOUNCE_ANIMATION_DURATION    (1.f)
 
 
 // Cache-related

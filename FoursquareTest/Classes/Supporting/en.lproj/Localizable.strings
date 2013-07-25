@@ -13,4 +13,5 @@
 "skTitleMeters" = "m";
 "skTitleConnectionLost" = "Seems like Internet connection is lost.";
 "skTitleLoading" = "Loading...";
-
+"skTitleDuplicates" = "Duplicates";
+"skTitleProposeChanges" = "Propose changes";
