@@ -29,8 +29,10 @@
 #define kFSQAPIRequestVenueExploreLatLong           @"ll"
 #define kFSQAPIRequestVenueExploreLimit             @"limit"
 #define kFSQAPIRequestVenueExploreOffset            @"offset"
+#define kFSQAPIRequestVenueExploreIntent            @"intent"
 #define kFSQDicVenuesSearched                       @"venues"
 
+#define kFSQDicVenueID                              @"id"
 #define kFSQDicVenueName                            @"name"
 #define kFSQDicVenueAddressFuzzed                   @"location.isFuzzed"
 #define kFSQDicVenueAddress                         @"location.address"
@@ -68,6 +70,7 @@ typedef enum _FTFSQAPIICONTYPE {
 #define FT_APPRNS_CELL_LOADING_HEIGHT               (30.f)
 #define FT_APPRNS_CELL_HEIGHT                       (70.f)
 #define FT_APPRNS_MAP_HEIGHT                        (200.f)
+#define FT_APPRNS_MAP_DEFAULT_ZOOM_LEVEL            (9)
 #define FT_APPRNS_CANCEL_BUTTON_INSET               (5.f)
 #define FT_APPRNS_SEARCHFIELD_INSET                 (16.f)
 #define FT_APPRNS_PULL2REFRESH_SLIDE_TIME           (.3f)
@@ -79,10 +82,10 @@ typedef enum _FTFSQAPIICONTYPE {
 #define FT_APPRNS_VENUE_NAME_FONT_SIZE              (14.f)
 #define FT_APPRNS_VENUE_NAME_FONT_COLOR             [UIColor colorWithRed:(100.f/255.f) green:(89.f/255.f) blue:(89.f/255.f) alpha:1.0]
 #define FT_APPRNS_VENUE_ADDRESS_FONT_NAME           @"Gotham-Book"
-#define FT_APPRNS_VENUE_ADDRESS_FONT_SIZE           (10.f)
+#define FT_APPRNS_VENUE_ADDRESS_FONT_SIZE           (11.f)
 #define FT_APPRNS_VENUE_ADDRESS_FONT_COLOR          [UIColor colorWithRed:(134.f/255.f) green:(127.f/255.f) blue:(118.f/255.f) alpha:1.0]
-#define FT_APPRNS_VENUE_INFO_FONT_NAME              @"Gotham-Book"
-#define FT_APPRNS_VENUE_INFO_FONT_SIZE              (10.f)
+#define FT_APPRNS_VENUE_INFO_FONT_NAME              @"Helvetica"
+#define FT_APPRNS_VENUE_INFO_FONT_SIZE              (11.f)
 #define FT_APPRNS_VENUE_INFO_FONT_COLOR             [UIColor colorWithRed:(134.f/255.f) green:(127.f/255.f) blue:(118.f/255.f) alpha:1.0]
 #define FT_APPRNS_VENUE_CELL_INFO_TEXT_SPACING      (4.f)
 

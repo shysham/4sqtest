@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-#import "FTAuxTableViewController.h"
-
 
 @interface FTViewController : UIViewController
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
-@property (nonatomic, retain) IBOutlet FTAuxTableViewController *auxTableVC;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+
 @end

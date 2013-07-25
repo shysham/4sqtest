@@ -83,7 +83,6 @@
 		5FDAD299179F34DD00D81935 /* cancel-bg-pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD295179F34DD00D81935 /* cancel-bg-pressed@2x.png */; };
 		5FDAD29A179F34DD00D81935 /* cancel-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD296179F34DD00D81935 /* cancel-bg.png */; };
 		5FDAD29B179F34DD00D81935 /* cancel-bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD297179F34DD00D81935 /* cancel-bg@2x.png */; };
-		5FDAD29F179F421A00D81935 /* FTAuxTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD29E179F421A00D81935 /* FTAuxTableViewController.m */; };
 		5FDAD2A3179F481B00D81935 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2A2179F481B00D81935 /* EGORefreshTableHeaderView.m */; };
 		5FDAD2A6179F62AF00D81935 /* FTUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2A5179F62AF00D81935 /* FTUtilities.m */; };
 		5FDAD2A9179F6ABC00D81935 /* search-field.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2A7179F6ABC00D81935 /* search-field.png */; };
@@ -211,8 +210,6 @@
 		5FDAD296179F34DD00D81935 /* cancel-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel-bg.png"; sourceTree = "<group>"; };
 		5FDAD297179F34DD00D81935 /* cancel-bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel-bg@2x.png"; sourceTree = "<group>"; };
 		5FDAD29C179F37BC00D81935 /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ru; path = ru.lproj/FTViewController.xib; sourceTree = "<group>"; };
-		5FDAD29D179F421A00D81935 /* FTAuxTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTAuxTableViewController.h; sourceTree = "<group>"; };
-		5FDAD29E179F421A00D81935 /* FTAuxTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTAuxTableViewController.m; sourceTree = "<group>"; };
 		5FDAD2A1179F481B00D81935 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		5FDAD2A2179F481B00D81935 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		5FDAD2A4179F62AF00D81935 /* FTUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTUtilities.h; sourceTree = "<group>"; };
@@ -423,8 +420,6 @@
 			children = (
 				5FDAD213179ECEB300D81935 /* FTViewController.h */,
 				5FDAD214179ECEB300D81935 /* FTViewController.m */,
-				5FDAD29D179F421A00D81935 /* FTAuxTableViewController.h */,
-				5FDAD29E179F421A00D81935 /* FTAuxTableViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -688,7 +683,6 @@
 				5FDAD242179ECEBF00D81935 /* Reachability.m in Sources */,
 				5FDAD27F179F098B00D81935 /* FTDataManager.m in Sources */,
 				5FDAD282179F110800D81935 /* FTVenueTableCell.m in Sources */,
-				5FDAD29F179F421A00D81935 /* FTAuxTableViewController.m in Sources */,
 				5FDAD2A3179F481B00D81935 /* EGORefreshTableHeaderView.m in Sources */,
 				5FDAD2A6179F62AF00D81935 /* FTUtilities.m in Sources */,
 				5FDAD2C3179FB99200D81935 /* MKMapView+Zooming.m in Sources */,

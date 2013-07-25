@@ -7,14 +7,17 @@
 //
 
 #import "FTVenueTableCell.h"
+#import "UIImageView+AFNetworking.h"
+#import "FTDataManager.h"
 
 @interface FTVenueTableCell()
-
+@property (nonatomic, retain) NSString *venueID;
 - (void) setupLayoutWithVenueData:(NSDictionary*)aVenue;
 
 @end
 
 @implementation FTVenueTableCell
+@synthesize venueID = _venueID;
 @synthesize labelName = _labelName, labelAddress = _labelAddress, labelDistance = _labelDistance;
 @synthesize imgvCategory = _imgvCategory, imgvSpecial = _imgvSpecial, imgvAux = _imgvAux, labelAux = _labelAux;
 
@@ -40,6 +43,7 @@
 
 - (void) dealloc
 {
+    [_venueID release];
     [_labelName release];
     [_labelAddress release];
     [_labelDistance release];
@@ -58,9 +62,13 @@
 
 - (void) setupLayoutWithVenueData:(NSDictionary*)aVenue
 {
-    [self.imgvCategory setBackgroundColor:[UIColor clearColor]];
-    [self.imgvCategory setImage:[UIImage imageNamed:@"category-none.png"]];
-    
+    // Check if cell UI is dirty
+    BOOL shouldUpdateImage = (!self.venueID || [self.venueID caseInsensitiveCompare:[aVenue valueForKey:kFSQDicVenueID]] != NSOrderedSame);
+
+    if (shouldUpdateImage){
+        [self.imgvCategory setBackgroundColor:[UIColor clearColor]];
+        [self.imgvCategory setImage:[UIImage imageNamed:@"category-none.png"]];
+    }
     
     // Name / title
     self.labelName.text = [aVenue objectForKey:kFSQDicVenueName];
@@ -131,7 +139,15 @@
     NSNumber *spec = [aVenue valueForKeyPath:kFSQDicVenueSpecials];
     self.imgvSpecial.hidden = (!(spec && [spec integerValue] > 0));
     
-    self.imgvCategory.backgroundColor = [UIColor clearColor];
+    // Category icon
+    if (shouldUpdateImage){
+        NSString *iconPath = [FTDataManager iconURLForImageType:FSQICONTP_DESCRIPTION
+                                                     foreground:NO
+                                                       forVenue:aVenue];
+        if (iconPath){
+            [self.imgvCategory setImageWithURL:[NSURL URLWithString:iconPath] placeholderImage:[UIImage imageNamed:@"venue-img-bg.png"]];
+        }
+    }
 }
 
 /*

@@ -76,7 +76,8 @@ static FTDataManager *sharedDataManager = nil;
     NSURL *url = [FTDataManager aux_urlForResource:[FT_FSQAPI_BASE_URL stringByAppendingString:FT_FSQAPI_VENUES_SEARCH]
                                         parameters:@{kFSQAPIRequestVenueExploreLatLong: [NSString stringWithFormat:@"%f,%f", coord.latitude, coord.longitude],
                                                        kFSQAPIRequestVenueExploreLimit: [NSString stringWithFormat:@"%u", count],
-                                                      kFSQAPIRequestVenueExploreOffset: [NSString stringWithFormat:@"%u", offset]}];
+                                                      kFSQAPIRequestVenueExploreOffset: [NSString stringWithFormat:@"%u", offset],
+                                                      kFSQAPIRequestVenueExploreIntent: @"checkin"}];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
@@ -146,7 +147,7 @@ static FTDataManager *sharedDataManager = nil;
     NSString *prim;
     for (NSDictionary *dic in cats){
         prim = [dic objectForKey:kFSQDicVenueCategoryPrimary];
-        if (prim && [prim isEqualToString:@"true"]){
+        if (prim && [(NSNumber*)prim boolValue]){
             imgPrefix = [dic valueForKeyPath:kFSQDicVenueCategoryIconPrefix];
             imgSfx = [dic valueForKeyPath:kFSQDicVenueCategoryIconSuffix];
             break;
@@ -170,7 +171,7 @@ static FTDataManager *sharedDataManager = nil;
     
     NSString *ret = [[[NSString alloc] initWithFormat:@"%@%@%@%@", imgPrefix, (isFG ? @"" : @"bg_"), specifier, imgSfx] autorelease];
     
-    NSLog(@"FTDataManager::iconURL2 prepared as: %@", ret);
+    ///NSLog(@"FTDataManager::iconURL2 prepared as: %@", ret);
     
     return ret;
 }

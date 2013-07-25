@@ -17,6 +17,7 @@
 + (NSString*) encodeURLString:(NSString *)rawString;
 + (NSString*) niceReadableDistanceWithMeters:(CGFloat)meters;
 + (CGSize) scaleSize:(CGSize)size proportionalToSize:(CGSize)toSize;
++ (BOOL) areValidLatitude:(CLLocationDegrees)lat longitude:(CLLocationDegrees)lng;
 
 + (void) showNotificationOnView:(UIView*)aView withMessage:(NSString*)aMessage image:(UIImage*)anImage
                            size:(CGSize)aSize backColor:(UIColor*)aColor;

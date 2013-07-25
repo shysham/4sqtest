@@ -124,6 +124,11 @@
     return toSize;
 }
 
++ (BOOL) areValidLatitude:(CLLocationDegrees)lat longitude:(CLLocationDegrees)lng
+{
+    return (!(lat > 90.f || lat < -90.f || lng > 180.f || lng < -180.f));
+}
+
 // Notification popup
 + (void) showNotificationOnView:(UIView*)aView withMessage:(NSString*)aMessage image:(UIImage*)anImage
                            size:(CGSize)aSize backColor:(UIColor*)aColor

@@ -21,7 +21,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setupView];
+        //[self setupView];
     }
     return self;
 }
@@ -42,13 +42,27 @@
         return;
     }
     
-    FTFSQAPIANNOTATIONTYPE tp = [((FTAnnotation*)self.annotation) type];
+    [self setBackgroundColor:[UIColor clearColor]];
+    CGRect frame = self.frame;
+    frame.origin.y -= 10.f;
+    [self setFrame:frame];
+    //[self setFrame:CGRectMake(0, 0, FT_APPRNS_ANNOTATION_IMAGE_WIDTH, FT_APPRNS_ANNOTATION_IMAGE_HEIGHT)];
+    [self setCanShowCallout:NO];
     
-    UIImageView *annView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(tp == FSQANNTP_SPECIAL ?
-                                                                                  FT_APPRNS_ANNOTATION_SPECIAL_IMAGE_NAME
-                                                                                  :
-                                                                                  FT_APPRNS_ANNOTATION_REGULAR_IMAGE_NAME)]];
+    FTAnnotation *ann = (FTAnnotation*)self.annotation;
+    FTFSQAPIANNOTATIONTYPE tp = [ann type];
     
+    self.image = [UIImage imageNamed:(tp == FSQANNTP_SPECIAL ?
+                                      FT_APPRNS_ANNOTATION_SPECIAL_IMAGE_NAME
+                                      :
+                                      FT_APPRNS_ANNOTATION_REGULAR_IMAGE_NAME)];
+
+    UIImageView *cat = [[UIImageView alloc] initWithFrame:CGRectMake(.0f, .0f, FT_APPRNS_ANNOTATION_IMAGE_WIDTH, FT_APPRNS_ANNOTATION_IMAGE_WIDTH /*yes, it is not a mistake*/)];
+    [cat setImage:ann.image];
+    
+    [self addSubview:cat];
+    
+    [cat release];
 }
 
 /*

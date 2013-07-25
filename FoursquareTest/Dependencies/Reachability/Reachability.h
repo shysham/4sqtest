@@ -47,6 +47,7 @@
 
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+#import <netinet/in.h>  // added to suppress warning about sockaddr_in
 
 typedef enum {
 	NotReachable = 0,
