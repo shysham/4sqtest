@@ -10,4 +10,6 @@
 "skTitleSearchBar" = "Search Places";
 "skTitleButtonCancel" = "Cancel";
 "skTitleDefaultDummy" = "I am a dummy text";
+"skTitleKilometers" = "km";
+"skTitleMeters" = "m";
 

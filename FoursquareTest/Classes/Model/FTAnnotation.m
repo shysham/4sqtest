@@ -12,21 +12,21 @@
 @end
 
 @implementation FTAnnotation
-@synthesize coordinate = _coordinate, category = _category, type = _type, annotationView = _annotationView;
+@synthesize coordinate = _coordinate, iconURL = _iconURL, type = _type;
 
 - (id) init
 {
     if ((self = [super init])){
-        [self auxInitializeWithType:FSQANNTP_UNKNOWN categoryID:@"" coordinate:CLLocationCoordinate2DMake(0.f, 0.f)];
+        [self auxInitializeWithType:FSQANNTP_UNKNOWN iconURL:@"" coordinate:CLLocationCoordinate2DMake(0.f, 0.f)];
     }
     
     return self;
 }
 
-- (id) initWithType:(FTFSQAPIANNOTATIONTYPE)annType categoryID:(NSString*)fsqCatID coordinate:(CLLocationCoordinate2D)aCoord
+- (id) initWithType:(FTFSQAPIANNOTATIONTYPE)annType iconURL:(NSString*)fsqIconURL coordinate:(CLLocationCoordinate2D)aCoord
 {
     if ((self = [super init])){
-        [self auxInitializeWithType:annType categoryID:fsqCatID coordinate:aCoord];
+        [self auxInitializeWithType:annType iconURL:fsqIconURL coordinate:aCoord];
     }
     
     return self;
@@ -34,17 +34,16 @@
 
 - (void) dealloc
 {
-    [_category release];
-    [_annotationView release];
+    [_iconURL release];
     
     [super dealloc];
 }
 
-- (void) auxInitializeWithType:(FTFSQAPIANNOTATIONTYPE)annType categoryID:(NSString*)fsqCatID coordinate:(CLLocationCoordinate2D)aCoord
+- (void) auxInitializeWithType:(FTFSQAPIANNOTATIONTYPE)annType iconURL:(NSString*)fsqIconURL coordinate:(CLLocationCoordinate2D)aCoord
 {
-    // •
-    // •
-    // •
+    self.type = annType;
+    self.iconURL = fsqIconURL;
+    [self setCoordinate:aCoord];
 }
 
 @end

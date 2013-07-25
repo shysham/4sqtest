@@ -12,4 +12,6 @@
 @interface FTAuxTableViewController : UITableViewController {
 }
 
+@property (nonatomic, assign) CLLocationCoordinate2D lastKnownCoordinate;
+
 @end

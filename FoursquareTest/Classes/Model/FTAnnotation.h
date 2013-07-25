@@ -11,10 +11,9 @@
 
 @interface FTAnnotation : NSObject <MKAnnotation>
 
-@property (nonatomic, retain) UIImageView *annotationView;
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
-@property (nonatomic, retain) NSString* category;
+@property (nonatomic, retain) NSString* iconURL;
 @property (nonatomic, assign) FTFSQAPIANNOTATIONTYPE type;
 
-- (id) initWithType:(FTFSQAPIANNOTATIONTYPE)annType categoryID:(NSString*)fsqCatID coordinate:(CLLocationCoordinate2D)aCoord;
+- (id) initWithType:(FTFSQAPIANNOTATIONTYPE)annType iconURL:(NSString*)fsqIconURL coordinate:(CLLocationCoordinate2D)aCoord;
 @end

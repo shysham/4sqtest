@@ -8,6 +8,7 @@
 
 #import "FTAppDelegate.h"
 #import "FTViewController.h"
+#import "FTDataManager.h"
 
 @implementation FTAppDelegate
 

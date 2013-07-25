@@ -100,12 +100,14 @@
 		5FDAD2BE179F891600D81935 /* category-none@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2BC179F891600D81935 /* category-none@2x.png */; };
 		5FDAD2C0179FA0DE00D81935 /* FTVenueTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2BF179FA0DE00D81935 /* FTVenueTableCell.xib */; };
 		5FDAD2C3179FB99200D81935 /* MKMapView+Zooming.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2C2179FB99100D81935 /* MKMapView+Zooming.m */; };
-		5FDAD2CA179FBB4600D81935 /* English Bay.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2C5179FBB4600D81935 /* English Bay.gpx */; };
+		5FDAD2CA179FBB4600D81935 /* Specials Here.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2C5179FBB4600D81935 /* Specials Here.gpx */; };
 		5FDAD2CB179FBB4600D81935 /* Pacific Spirit Park.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2C6179FBB4600D81935 /* Pacific Spirit Park.gpx */; };
 		5FDAD2CC179FBB4600D81935 /* Somewhere in Vancouver.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2C7179FBB4600D81935 /* Somewhere in Vancouver.gpx */; };
-		5FDAD2CD179FBB4600D81935 /* Челябинск, Кирова.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2C8179FBB4600D81935 /* Челябинск, Кирова.gpx */; };
+		5FDAD2CD179FBB4600D81935 /* Озерск, Иртяшская.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2C8179FBB4600D81935 /* Озерск, Иртяшская.gpx */; };
 		5FDAD2CE179FBB4600D81935 /* Bresje, Jagodina.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2C9179FBB4600D81935 /* Bresje, Jagodina.gpx */; };
 		5FDAD2D1179FC37D00D81935 /* FTAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D0179FC37C00D81935 /* FTAnnotation.m */; };
+		5FDAD2D417A0468700D81935 /* FTAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D317A0468700D81935 /* FTAnnotationView.m */; };
+		5FDAD2D717A0840600D81935 /* FTObjVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D617A0840400D81935 /* FTObjVenue.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -228,13 +230,17 @@
 		5FDAD2BF179FA0DE00D81935 /* FTVenueTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FTVenueTableCell.xib; sourceTree = "<group>"; };
 		5FDAD2C1179FB99000D81935 /* MKMapView+Zooming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+Zooming.h"; sourceTree = "<group>"; };
 		5FDAD2C2179FB99100D81935 /* MKMapView+Zooming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+Zooming.m"; sourceTree = "<group>"; };
-		5FDAD2C5179FBB4600D81935 /* English Bay.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "English Bay.gpx"; sourceTree = "<group>"; };
+		5FDAD2C5179FBB4600D81935 /* Specials Here.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Specials Here.gpx"; sourceTree = "<group>"; };
 		5FDAD2C6179FBB4600D81935 /* Pacific Spirit Park.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Pacific Spirit Park.gpx"; sourceTree = "<group>"; };
 		5FDAD2C7179FBB4600D81935 /* Somewhere in Vancouver.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Somewhere in Vancouver.gpx"; sourceTree = "<group>"; };
-		5FDAD2C8179FBB4600D81935 /* Челябинск, Кирова.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Челябинск, Кирова.gpx"; sourceTree = "<group>"; };
+		5FDAD2C8179FBB4600D81935 /* Озерск, Иртяшская.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Озерск, Иртяшская.gpx"; sourceTree = "<group>"; };
 		5FDAD2C9179FBB4600D81935 /* Bresje, Jagodina.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Bresje, Jagodina.gpx"; sourceTree = "<group>"; };
 		5FDAD2CF179FC37C00D81935 /* FTAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTAnnotation.h; sourceTree = "<group>"; };
 		5FDAD2D0179FC37C00D81935 /* FTAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTAnnotation.m; sourceTree = "<group>"; };
+		5FDAD2D217A0468700D81935 /* FTAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTAnnotationView.h; sourceTree = "<group>"; };
+		5FDAD2D317A0468700D81935 /* FTAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTAnnotationView.m; sourceTree = "<group>"; };
+		5FDAD2D517A0840400D81935 /* FTObjVenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTObjVenue.h; sourceTree = "<group>"; };
+		5FDAD2D617A0840400D81935 /* FTObjVenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTObjVenue.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -427,6 +433,8 @@
 				5FDAD2A5179F62AF00D81935 /* FTUtilities.m */,
 				5FDAD2CF179FC37C00D81935 /* FTAnnotation.h */,
 				5FDAD2D0179FC37C00D81935 /* FTAnnotation.m */,
+				5FDAD2D517A0840400D81935 /* FTObjVenue.h */,
+				5FDAD2D617A0840400D81935 /* FTObjVenue.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -452,6 +460,8 @@
 				5FDAD280179F110800D81935 /* FTVenueTableCell.h */,
 				5FDAD281179F110800D81935 /* FTVenueTableCell.m */,
 				5FDAD2BF179FA0DE00D81935 /* FTVenueTableCell.xib */,
+				5FDAD2D217A0468700D81935 /* FTAnnotationView.h */,
+				5FDAD2D317A0468700D81935 /* FTAnnotationView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -513,10 +523,10 @@
 		5FDAD2C4179FBB4500D81935 /* Testing */ = {
 			isa = PBXGroup;
 			children = (
-				5FDAD2C5179FBB4600D81935 /* English Bay.gpx */,
+				5FDAD2C5179FBB4600D81935 /* Specials Here.gpx */,
 				5FDAD2C6179FBB4600D81935 /* Pacific Spirit Park.gpx */,
 				5FDAD2C7179FBB4600D81935 /* Somewhere in Vancouver.gpx */,
-				5FDAD2C8179FBB4600D81935 /* Челябинск, Кирова.gpx */,
+				5FDAD2C8179FBB4600D81935 /* Озерск, Иртяшская.gpx */,
 				5FDAD2C9179FBB4600D81935 /* Bresje, Jagodina.gpx */,
 			);
 			path = Testing;
@@ -640,10 +650,10 @@
 				5FDAD2BD179F891600D81935 /* category-none.png in Resources */,
 				5FDAD2BE179F891600D81935 /* category-none@2x.png in Resources */,
 				5FDAD2C0179FA0DE00D81935 /* FTVenueTableCell.xib in Resources */,
-				5FDAD2CA179FBB4600D81935 /* English Bay.gpx in Resources */,
+				5FDAD2CA179FBB4600D81935 /* Specials Here.gpx in Resources */,
 				5FDAD2CB179FBB4600D81935 /* Pacific Spirit Park.gpx in Resources */,
 				5FDAD2CC179FBB4600D81935 /* Somewhere in Vancouver.gpx in Resources */,
-				5FDAD2CD179FBB4600D81935 /* Челябинск, Кирова.gpx in Resources */,
+				5FDAD2CD179FBB4600D81935 /* Озерск, Иртяшская.gpx in Resources */,
 				5FDAD2CE179FBB4600D81935 /* Bresje, Jagodina.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -675,6 +685,8 @@
 				5FDAD2A6179F62AF00D81935 /* FTUtilities.m in Sources */,
 				5FDAD2C3179FB99200D81935 /* MKMapView+Zooming.m in Sources */,
 				5FDAD2D1179FC37D00D81935 /* FTAnnotation.m in Sources */,
+				5FDAD2D417A0468700D81935 /* FTAnnotationView.m in Sources */,
+				5FDAD2D717A0840600D81935 /* FTObjVenue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

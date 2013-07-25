@@ -8,11 +8,14 @@
 
 #import "FTAuxTableViewController.h"
 #import "FTVenueTableCell.h"
+#import "FTDataManager.h"
 
 @interface FTAuxTableViewController () <EGORefreshTableHeaderDelegate> {
     EGORefreshTableHeaderView*      _refreshHeaderView;
     BOOL                            _reloading;
 }
+
+@property (nonatomic, retain) NSArray *venues;
 
 - (void) reloadTableViewDataSource;
 - (void) doneLoadingTableViewData;
@@ -22,6 +25,7 @@
 @end
 
 @implementation FTAuxTableViewController
+@synthesize venues = _venues, lastKnownCoordinate = _lastKnownCoordinate;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -81,11 +85,7 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // •
-    // •
-    // •
-    
-    return 14;
+    return (self.venues ? [self.venues count] : 0);
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -137,10 +137,7 @@
         [cell setSelectedBackgroundView:[[[UIImageView alloc] initWithImage:selectionBackground] autorelease]];
     }
     
-    [cell updateWithVenueData:nil];
-    
-    if (row == 1)
-        cell.imgvSpecial.hidden = NO;
+    [cell updateWithVenueData:[self.venues objectAtIndex:indexPath.row]];
     
     return cell;
 }
@@ -166,17 +163,25 @@
 {
 	_reloading = YES;
     
-    // •
-    // •
-    // Reloading data
-    // •
-    // •
+    [FTDataManager getVenuesForLocationCoordinate:self.lastKnownCoordinate
+                                        withBlock:^(NSArray *venues, NSError *err) {
+                                            if ((!err || [err code] == 0) && venues){
+                                                self.venues = venues;
+                                            }
+                                            else {
+                                                NSLog(@"ERR: table view cannot be updated - failed to retrieve venues");
+                                            }
+                                            
+                                            [self doneLoadingTableViewData];
+                                        }];
 }
 
 - (void) doneLoadingTableViewData
 {
-	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    
+    [self.tableView reloadData];
+    _reloading = NO;
 }
 
 
@@ -198,7 +203,7 @@
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
 {	
 	[self reloadTableViewDataSource];
-	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+	///[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
 }
 
 - (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
@@ -213,6 +218,7 @@
 {
     self.tableView.backgroundView = nil;
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"app-bg-pattern.png"]];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,1.0f,1.0f)];
     
     if (_refreshHeaderView == nil) {
 		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
@@ -226,6 +232,8 @@
 
 - (void) cleanUp
 {
+    [_venues release];  _venues = nil;
+    
     _refreshHeaderView = nil;
     self.tableView.delegate = nil;
     self.tableView.dataSource = nil;

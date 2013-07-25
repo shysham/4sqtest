@@ -84,15 +84,23 @@
     if (!userLocation)
         return;
     
+    [self.auxTableVC setLastKnownCoordinate:userLocation.coordinate];
+    
     [mapView setCenterCoordinate:userLocation.coordinate zoomLevel:14 animated:YES];
     
     // Add an annotation
+    // •
+    // •
+    // •
+    // •
+    /*
     MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
     point.coordinate = userLocation.coordinate;
     point.title = @"Where am I?";
     point.subtitle = @"I'm here!!!";
     
     [self.mapView addAnnotation:point];
+     */
 }
 
 
@@ -122,6 +130,9 @@
     [self.searchBar setSearchFieldBackgroundImage:[[UIImage imageNamed:@"search-field.png"] resizableImageWithCapInsets:insets] forState:UIControlStateNormal];
     [[UISearchBar appearance] setImage:[UIImage imageNamed:@"exp-toc-search-icon.png"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     [self.searchBar setPlaceholder:NSLocalizedString(@"skTitleSearchBar", nil)];
+    
+    [self.searchBar setPositionAdjustment:UIOffsetMake(FT_APPRNS_SEARCHBAR_ICON_X_OFFSET, 0) forSearchBarIcon:UISearchBarIconSearch];
+    [self.searchBar setSearchTextPositionAdjustment:UIOffsetMake(FT_APPRNS_SEARCHBAR_TEXT_X_OFFSET, 0)];
 
     insets = UIEdgeInsetsMake(.0, FT_APPRNS_CANCEL_BUTTON_INSET, .0, FT_APPRNS_CANCEL_BUTTON_INSET);
     [[UIBarButtonItem appearance]

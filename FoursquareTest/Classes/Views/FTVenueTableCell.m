@@ -61,28 +61,75 @@
     [self.imgvCategory setBackgroundColor:[UIColor clearColor]];
     [self.imgvCategory setImage:[UIImage imageNamed:@"category-none.png"]];
     
-    self.labelName.text = @"Marina's Office";
     
+    // Name / title
+    self.labelName.text = [aVenue objectForKey:kFSQDicVenueName];
+    self.labelName.textColor = FT_APPRNS_VENUE_NAME_FONT_COLOR;
+    
+    
+    // Address
     [self.labelAddress setFont:[UIFont fontWithName:FT_APPRNS_VENUE_ADDRESS_FONT_NAME size:FT_APPRNS_VENUE_ADDRESS_FONT_SIZE]];
-    self.labelAddress.text = [@"Jagodina, Bresje bb" uppercaseString];
+    self.labelAddress.textColor = FT_APPRNS_VENUE_ADDRESS_FONT_COLOR;
+    
+    NSString *fuzzed = [aVenue valueForKeyPath:kFSQDicVenueAddressFuzzed];
+    NSString *addr = [aVenue valueForKeyPath:kFSQDicVenueAddress];
+    NSString *cross = [aVenue valueForKeyPath:kFSQDicVenueCrossStreet];
+    
+    NSString *fullAddress = nil;
+    if ((!fuzzed || [fuzzed isEqualToString:@"false"]) && addr){
+        fullAddress = addr;
+        if (cross && [cross length] != 0){
+            fullAddress = [fullAddress stringByAppendingFormat:@" (%@)", cross];
+        }
+    }
+    
+    self.labelAddress.text = (fullAddress ? [fullAddress uppercaseString] : @"");
+    [self.labelAddress setHidden:(fullAddress == nil)];
+    
+    
+    // Distance
+    NSNumber *dist = [aVenue valueForKeyPath:kFSQDicVenueDistance];
+    NSString *distStr = (dist ? [FTUtilities niceReadableDistanceWithMeters:[dist floatValue]] : nil);
     
     [self.labelDistance setNumberOfLines:0];
     [self.labelDistance setFont:[UIFont fontWithName:FT_APPRNS_VENUE_INFO_FONT_NAME size:FT_APPRNS_VENUE_INFO_FONT_SIZE]];
-    self.labelDistance.text = @"0.2 км";
+    self.labelDistance.textColor = FT_APPRNS_VENUE_INFO_FONT_COLOR;
+    self.labelDistance.text = (distStr ? distStr : @"");
     CGSize size = [self.labelDistance.text sizeWithFont:self.labelDistance.font];
     [self.labelDistance setFrame:CGRectMake(self.labelDistance.frame.origin.x,
-                                            self.labelDistance.frame.origin.y, size.width, self.labelDistance.frame.size.height)];
+                                            (fullAddress ? self.labelDistance.frame.origin.y : self.labelAddress.frame.origin.y +
+                                                        (self.labelAddress.frame.size.height - self.labelDistance.frame.size.height)),
+                                            size.width, self.labelDistance.frame.size.height)];
+    [self.labelDistance setHidden:(distStr == nil)];
     
-    CGRect rect = self.imgvAux.frame;
-    rect.origin.x = self.labelDistance.frame.origin.x + self.labelDistance.frame.size.width + FT_APPRNS_VENUE_CELL_INFO_TEXT_SPACING;
-    [self.imgvAux setFrame:rect];
     
-    rect = self.labelAux.frame;
-    self.labelAux.text = @"4";
-    rect.origin.x = self.imgvAux.frame.origin.x + self.imgvAux.frame.size.width;
-    [self.labelAux setFrame:rect];
+    // Here now
+    NSNumber *hereNow = [aVenue valueForKeyPath:kFSQDicVenueHereNowCount];
+    NSInteger iHN = ((hereNow && [hereNow integerValue] > 0) ? [hereNow integerValue] : 0);
     
-    self.imgvSpecial.hidden = YES;  // by default
+    if (iHN > 0){
+        CGRect rect = self.imgvAux.frame;
+        rect.origin.x = (distStr ?
+                         self.labelDistance.frame.origin.x + self.labelDistance.frame.size.width + FT_APPRNS_VENUE_CELL_INFO_TEXT_SPACING
+                         :
+                         self.labelName.frame.origin.x);
+        rect.origin.y = self.labelDistance.frame.origin.y;
+        [self.imgvAux setFrame:rect];
+        
+        rect = self.labelAux.frame;
+        self.labelAux.text = [NSString stringWithFormat:@"%d", iHN];
+        self.labelAux.textColor = FT_APPRNS_VENUE_INFO_FONT_COLOR;
+        rect.origin.x = self.imgvAux.frame.origin.x + self.imgvAux.frame.size.width;
+        rect.origin.y = self.labelDistance.frame.origin.y;
+        [self.labelAux setFrame:rect];
+    }
+    
+    [self.imgvAux setHidden:(iHN == 0)];
+    [self.labelAux setHidden:(iHN == 0)];
+    
+    // Special marker
+    NSNumber *spec = [aVenue valueForKeyPath:kFSQDicVenueSpecials];
+    self.imgvSpecial.hidden = (!(spec && [spec integerValue] > 0));
 }
 
 /*

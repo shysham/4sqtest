@@ -10,4 +10,11 @@
 
 @interface FTUtilities : NSObject
 
++ (BOOL) isRetina;
++ (UIImage*) make4SQImageBackgroundTransparentForImage:(UIImage*)rawImage;
++ (NSString*) pathInDocumentsForFileName:(NSString*)name;
++ (BOOL) existsInDocumentsFileWithName:(NSString*)name;
++ (NSString*) encodeURLString:(NSString *)rawString;
++ (NSString*) niceReadableDistanceWithMeters:(CGFloat)meters;
+
 @end

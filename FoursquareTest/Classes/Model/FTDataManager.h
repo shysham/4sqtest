@@ -11,5 +11,21 @@
 @interface FTDataManager : NSObject
 + (id) sharedManager;
 
++ (BOOL) isExpiredCategoriesList;
++ (void) getCategoriesWithBlock:(void(^)(NSDictionary* info, NSError *err))block;
+
++ (void) getVenuesForLocationCoordinate:(CLLocationCoordinate2D)coord withBlock:(void(^)(NSArray* venues, NSError *err))block;
++ (void) getVenuesForLocationCoordinate:(CLLocationCoordinate2D)coord
+                                  count:(NSUInteger)count
+                           startingFrom:(NSUInteger)offset
+                              withBlock:(void(^)(NSArray* venues, NSError *err))block;
+
+
+// Aux yet app-specific methods (that's why they're not in FTUtilities)
+//+ (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType withBaseURL:(NSString*)baseURL;   //OBSOLETE
++ (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType forVenue:(NSDictionary*)aVenue;
+
+// Other
++ (NSArray*) supportedLocalizationCodes;
 
 @end

@@ -10,4 +10,5 @@
 "skTitleSearchBar" = "Искать места";
 "skTitleButtonCancel" = "Отменить";
 "skTitleDefaultDummy" = "Я простой текст-заглушка";
-
+"skTitleKilometers" = "км";
+"skTitleMeters" = "м";

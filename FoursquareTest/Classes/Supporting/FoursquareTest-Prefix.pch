@@ -15,4 +15,5 @@
     #import <MobileCoreServices/MobileCoreServices.h>
     #import <SystemConfiguration/SystemConfiguration.h>
     #import "Constants.h"
+    #import "FTUtilities.h"
 #endif
