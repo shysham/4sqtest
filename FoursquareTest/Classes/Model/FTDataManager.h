@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface FTDataManager : NSObject
+
 + (id) sharedManager;
 
-+ (BOOL) isExpiredCategoriesList;
-+ (void) getCategoriesWithBlock:(void(^)(NSDictionary* info, NSError *err))block;
++ (NSOperationQueue*) ftOperationQueue;
 
 + (void) getVenuesForLocationCoordinate:(CLLocationCoordinate2D)coord withBlock:(void(^)(NSArray* venues, NSError *err))block;
 + (void) getVenuesForLocationCoordinate:(CLLocationCoordinate2D)coord
@@ -20,9 +20,9 @@
                            startingFrom:(NSUInteger)offset
                               withBlock:(void(^)(NSArray* venues, NSError *err))block;
 
++ (NSInteger) calculateZoomFactorForVenueSet:(NSArray*)venueSet forLocation:(CLLocation*)coord;
 
 // Aux yet app-specific methods (that's why they're not in FTUtilities)
-//+ (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType withBaseURL:(NSString*)baseURL;   //OBSOLETE
 + (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType foreground:(BOOL)isFG forVenue:(NSDictionary*)aVenue;
 
 // Other

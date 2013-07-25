@@ -63,7 +63,9 @@
 - (void) setupLayoutWithVenueData:(NSDictionary*)aVenue
 {
     // Check if cell UI is dirty
-    BOOL shouldUpdateImage = (!self.venueID || [self.venueID caseInsensitiveCompare:[aVenue valueForKey:kFSQDicVenueID]] != NSOrderedSame);
+    NSString *newID = [aVenue valueForKey:kFSQDicVenueID];
+    
+    BOOL shouldUpdateImage = (!newID || !self.venueID || (self.venueID && newID && [self.venueID caseInsensitiveCompare:newID] != NSOrderedSame));
 
     if (shouldUpdateImage){
         [self.imgvCategory setBackgroundColor:[UIColor clearColor]];

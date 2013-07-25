@@ -2,8 +2,7 @@
 //  MKMapView+Zooming.h
 //  FoursquareTest
 //
-//  Created by Egor Dovzhenko on 24.07.13.
-//  Copyright (c) 2013 Egor Dovzhenko. All rights reserved.
+//  Updated by Egor Dovzhenko on 24.07.13.
 //
 
 #import <MapKit/MapKit.h>

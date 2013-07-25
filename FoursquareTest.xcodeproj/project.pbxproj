@@ -106,7 +106,6 @@
 		5FDAD2CE179FBB4600D81935 /* Bresje, Jagodina.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2C9179FBB4600D81935 /* Bresje, Jagodina.gpx */; };
 		5FDAD2D1179FC37D00D81935 /* FTAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D0179FC37C00D81935 /* FTAnnotation.m */; };
 		5FDAD2D417A0468700D81935 /* FTAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D317A0468700D81935 /* FTAnnotationView.m */; };
-		5FDAD2D717A0840600D81935 /* FTObjVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D617A0840400D81935 /* FTObjVenue.m */; };
 		5FDAD2DA17A0DC4000D81935 /* alert-warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D817A0DC4000D81935 /* alert-warning.png */; };
 		5FDAD2DB17A0DC4000D81935 /* alert-warning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D917A0DC4000D81935 /* alert-warning@2x.png */; };
 /* End PBXBuildFile section */
@@ -238,8 +237,6 @@
 		5FDAD2D0179FC37C00D81935 /* FTAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTAnnotation.m; sourceTree = "<group>"; };
 		5FDAD2D217A0468700D81935 /* FTAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTAnnotationView.h; sourceTree = "<group>"; };
 		5FDAD2D317A0468700D81935 /* FTAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTAnnotationView.m; sourceTree = "<group>"; };
-		5FDAD2D517A0840400D81935 /* FTObjVenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTObjVenue.h; sourceTree = "<group>"; };
-		5FDAD2D617A0840400D81935 /* FTObjVenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTObjVenue.m; sourceTree = "<group>"; };
 		5FDAD2D817A0DC4000D81935 /* alert-warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert-warning.png"; sourceTree = "<group>"; };
 		5FDAD2D917A0DC4000D81935 /* alert-warning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert-warning@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -434,8 +431,6 @@
 				5FDAD2A5179F62AF00D81935 /* FTUtilities.m */,
 				5FDAD2CF179FC37C00D81935 /* FTAnnotation.h */,
 				5FDAD2D0179FC37C00D81935 /* FTAnnotation.m */,
-				5FDAD2D517A0840400D81935 /* FTObjVenue.h */,
-				5FDAD2D617A0840400D81935 /* FTObjVenue.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -688,7 +683,6 @@
 				5FDAD2C3179FB99200D81935 /* MKMapView+Zooming.m in Sources */,
 				5FDAD2D1179FC37D00D81935 /* FTAnnotation.m in Sources */,
 				5FDAD2D417A0468700D81935 /* FTAnnotationView.m in Sources */,
-				5FDAD2D717A0840600D81935 /* FTObjVenue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,6 +741,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -770,6 +765,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -785,6 +781,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FoursquareTest/Classes/Supporting/FoursquareTest-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "FoursquareTest/FoursquareTest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -797,6 +794,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FoursquareTest/Classes/Supporting/FoursquareTest-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "FoursquareTest/FoursquareTest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";

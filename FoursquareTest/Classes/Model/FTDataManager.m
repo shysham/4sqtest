@@ -14,48 +14,22 @@ static FTDataManager *sharedDataManager = nil;
 
 @interface FTDataManager()
 + (NSURL*) aux_urlForResource:(NSString*)res parameters:(NSDictionary*)params;
-+ (void) aux_downloadCategoriesWithBlock:(void(^)(NSDictionary* info, NSError *err))block;
-+ (void) aux_saveCategoriesToDisk:(NSDictionary*)cats;
-+ (NSDictionary*) aux_loadCategoriesFromDisk;
 @end
 
 
 @implementation FTDataManager
 
-+ (BOOL) isExpiredCategoriesList
++ (NSOperationQueue*) ftOperationQueue
 {
-    if (![FTUtilities existsInDocumentsFileWithName:FT_DATA_CATEGORIES_LOCAL_FILE_NAME])
-        return YES;     // file is absent, needs to be downloaded
+    static NSOperationQueue *ftopqu = nil;
+    static dispatch_once_t onceToken;
     
-    NSDate *lastDate = (NSDate*)[[NSUserDefaults standardUserDefaults] objectForKey:kFTCategoriesLastUpdateTimestamp];
+    dispatch_once(&onceToken, ^{
+        ftopqu = [[NSOperationQueue alloc] init];
+        [ftopqu setMaxConcurrentOperationCount:FT_SYS_MAX_CONCURRENT_OPERATIONS];
+    });
     
-    if (!lastDate)
-        return YES;     // there were no updates yet, so it's like the list has expired
-    
-    return (fabs([lastDate timeIntervalSinceNow]) >= (FT_SECONDS_PER_DAY * FT_DATA_CATEGORIES_EXPIRATION_PERIOD));
-}
-
-+ (void) getCategoriesWithBlock:(void(^)(NSDictionary* info, NSError *err))block
-{
-    // Updates if necessary
-    if ([FTDataManager isExpiredCategoriesList]){
-        // Load from 4SQ
-        [FTDataManager aux_downloadCategoriesWithBlock:^(NSDictionary *info, NSError *err) {
-            if (!err || [err code] == 0){
-                [FTDataManager aux_saveCategoriesToDisk:info];
-            }
-            else {
-                NSLog(@"ERR: Failed to retrieve categories with error: %@", [err description]);
-            }
-            
-            block(info, err);
-        }];
-    }
-    else {
-        // Retrieve from disk
-        NSDictionary *dic = [FTDataManager aux_loadCategoriesFromDisk];
-        block (dic, nil);
-    }
+    return ftopqu;
 }
 
 + (void) getVenuesForLocationCoordinate:(CLLocationCoordinate2D)coord withBlock:(void(^)(NSArray* venues, NSError *err))block
@@ -101,39 +75,43 @@ static FTDataManager *sharedDataManager = nil;
 }
 
 
-// Aux
-/*
-+ (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType withBaseURL:(NSString*)baseURL
-{
-    // Makes URLs only background images (i.e. with "bg" prefix)
-    if (!baseURL)
-        return nil;
+// Method recalculates necessary (optimal) zoom factor basing on how many places are right close to the location
++ (NSInteger) calculateZoomFactorForVenueSet:(NSArray*)venueSet forLocation:(CLLocation*)loc
+{    
+    NSInteger numOfVenuesNear = 0;
     
-    NSRange rg = [baseURL rangeOfString:@"." options:NSBackwardsSearch];
-    if (rg.location == NSNotFound)
-        return nil;
-    
-    BOOL isRetina = [FTUtilities isRetina];
-    
-    NSString *specifier = @".";
-    switch (imgType){
-        case FSQICONTP_ANNOTATION:
-            specifier = (isRetina ? @"_bg_64." : @"_bg_32.");
-            break;
+    if (venueSet && [FTUtilities areValidLatitude:loc.coordinate.latitude longitude:loc.coordinate.longitude]){
+        CLLocation *venueLoc;
         
-        default:        // this one includes FSQICONTP_DESCRIPTION
-            specifier = (isRetina ? @"_bg_44." : @"_bg_88.");
+        for (NSDictionary *venue in venueSet){
+            CLLocationDegrees lat = [(NSNumber*)[venue valueForKeyPath:kFSQDicVenueLatitude] doubleValue];
+            CLLocationDegrees lng = [(NSNumber*)[venue valueForKeyPath:kFSQDicVenueLongitude] doubleValue];
+            
+            if ([FTUtilities areValidLatitude:lat longitude:lng]){
+                venueLoc = [[CLLocation alloc] initWithLatitude:lat longitude:lng];
+                if ([venueLoc distanceFromLocation:loc] < FT_APPRNS_LOCATION_NEAR_RADIUS){
+                    ++numOfVenuesNear;
+                }
+                [venueLoc release];
+            }
+        }
     }
     
-    NSString *ret = [[[NSString alloc] initWithString:
-                      [baseURL stringByReplacingOccurrencesOfString:@"." withString:specifier options:NSBackwardsSearch range:rg]] autorelease];
+    // Simple selector :)
+    //  We also could use more complex logic: e.g., calculate region which has not more than, say, 10 venues.
+    //  But let's do thet next time, during working day in Astra Stu dio :)
+    NSInteger zl;
     
-    NSLog(@"FTDataManager::iconURL prepared as: %@", ret);
+    if (numOfVenuesNear > (FT_FSQSPEC_DEFAULT_VENUE_COUNT * 0.75f))         zl = 12;
+    else if (numOfVenuesNear > (FT_FSQSPEC_DEFAULT_VENUE_COUNT * 0.5f))     zl = 11;
+    else if (numOfVenuesNear > (FT_FSQSPEC_DEFAULT_VENUE_COUNT * 0.25f))    zl = 10;
+    else zl = FT_APPRNS_MAP_DEFAULT_ZOOM_LEVEL;
     
-    return ret;
+    return zl;
 }
-*/
 
+
+// Aux
 + (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType foreground:(BOOL)isFG forVenue:(NSDictionary*)aVenue
 {
     if (!aVenue)
@@ -186,23 +164,6 @@ static FTDataManager *sharedDataManager = nil;
     return ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] != NotReachable);
 }
 
-+ (void) aux_downloadCategoriesWithBlock:(void(^)(NSDictionary* info, NSError *err))block
-{
-    NSURL *url = [FTDataManager aux_urlForResource:[FT_FSQAPI_BASE_URL stringByAppendingString:FT_FSQAPI_VENUES_CATEGORIES] parameters:nil];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-              block ((NSDictionary*)JSON, nil);
-          }
-          failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-              NSLog(@"ERR: Failed to download categories from server");
-              block (nil, error);
-          }];
-    
-    [operation start];
-}
-
 // This method automatically adds client ID and secret to the URL, as well localization (if possible)
 + (NSURL*) aux_urlForResource:(NSString*)res parameters:(NSDictionary*)params
 {
@@ -242,27 +203,6 @@ static FTDataManager *sharedDataManager = nil;
     NSURL *url = [[[NSURL alloc] initWithString:encoded] autorelease];
     
     return url;
-}
-
-+ (void) aux_saveCategoriesToDisk:(NSDictionary*)cats
-{
-    if (!cats)
-        return;
-
-    if ([cats writeToFile:[FTUtilities pathInDocumentsForFileName:FT_DATA_CATEGORIES_LOCAL_FILE_NAME] atomically:YES]){
-        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kFTCategoriesLastUpdateTimestamp];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-}
-
-+ (NSDictionary*) aux_loadCategoriesFromDisk
-{
-    NSDictionary *res = [[[NSDictionary alloc] initWithContentsOfFile:[FTUtilities pathInDocumentsForFileName:FT_DATA_CATEGORIES_LOCAL_FILE_NAME]] autorelease];
-
-    if (!res)
-        NSLog(@"ERR: Failed to load categories from disk");
-    
-    return res;
 }
 
 

@@ -17,6 +17,7 @@
 
 @implementation FTAnnotationView
 
+/*
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -25,6 +26,7 @@
     }
     return self;
 }
+ */
 
 - (id) initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -46,7 +48,6 @@
     CGRect frame = self.frame;
     frame.origin.y -= 10.f;
     [self setFrame:frame];
-    //[self setFrame:CGRectMake(0, 0, FT_APPRNS_ANNOTATION_IMAGE_WIDTH, FT_APPRNS_ANNOTATION_IMAGE_HEIGHT)];
     [self setCanShowCallout:NO];
     
     FTAnnotation *ann = (FTAnnotation*)self.annotation;

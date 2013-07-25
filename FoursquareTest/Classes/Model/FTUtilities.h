@@ -11,10 +11,8 @@
 @interface FTUtilities : NSObject
 
 + (BOOL) isRetina;
-+ (UIImage*) make4SQImageBackgroundTransparentForImage:(UIImage*)rawImage;
 + (NSString*) pathInDocumentsForFileName:(NSString*)name;
 + (BOOL) existsInDocumentsFileWithName:(NSString*)name;
-+ (NSString*) encodeURLString:(NSString *)rawString;
 + (NSString*) niceReadableDistanceWithMeters:(CGFloat)meters;
 + (CGSize) scaleSize:(CGSize)size proportionalToSize:(CGSize)toSize;
 + (BOOL) areValidLatitude:(CLLocationDegrees)lat longitude:(CLLocationDegrees)lng;

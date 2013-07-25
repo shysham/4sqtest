@@ -16,20 +16,6 @@
     return ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && ([[UIScreen mainScreen] scale] == 2.0));
 }
 
-+ (UIImage*) make4SQImageBackgroundTransparentForImage:(UIImage *)rawImage
-{
-    if (!rawImage)
-        return nil;
-    
-    CGFloat red, green, blue, alpha, d = FT_FSQSPEC_ICON_BG_COLOR_INACCURACY;
-    [(UIColor*)FT_FSQSPEC_ICON_BG_COLOR getRed:&red green:&green blue:&blue alpha:&alpha];
-    
-    const float colorMasking[6] = {(red - d), (red + d), (green - d), (green + d), (blue - d), (blue + d)};
-    UIImage *image = [UIImage imageWithCGImage: CGImageCreateWithMaskingColors(rawImage.CGImage, colorMasking)];
-    
-    return image;
-}
-
 + (NSString*) pathInDocumentsForFileName:(NSString *)name
 {
     NSString *ret = nil;
@@ -54,17 +40,6 @@
     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
     
     return (exists && !isDir);
-}
-
-+ (NSString*) encodeURLString:(NSString *)rawString
-{
-    NSString *encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(
-                                                                                  NULL,
-                                                                                  (CFStringRef)rawString,
-                                                                                  NULL,
-                                                                                  (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                  kCFStringEncodingUTF8);
-    return encodedString;
 }
 
 + (NSString*) niceReadableDistanceWithMeters:(CGFloat)meters

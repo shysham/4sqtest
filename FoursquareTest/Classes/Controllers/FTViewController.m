@@ -13,7 +13,7 @@
 #import "FTDataManager.h"
 #import "EGORefreshTableHeaderView.h"
 #import "FTVenueTableCell.h"
-#import "UIImageView+AFNetworking.h"
+#import "AFNetworking.h"
 #import "FTAnnotation.h"
 #import "FTAnnotationView.h"
 
@@ -117,7 +117,7 @@
     [self setLastKnownCoordinate:coord];
     [self reloadDataForceEvenIfHasData:NO];  // location change does not force venue list update. User must pull2refresh.
     
-    [mapView setCenterCoordinate:userLocation.coordinate zoomLevel:FT_APPRNS_MAP_DEFAULT_ZOOM_LEVEL animated:YES];
+    //[mapView setCenterCoordinate:userLocation.coordinate zoomLevel:FT_APPRNS_MAP_DEFAULT_ZOOM_LEVEL animated:YES];
 }
 
 // Managing annotations
@@ -126,51 +126,55 @@
     if (!self.venues)
         return;
     
-    //@synchronized(self){    // to avoid parallel influence if location has changed and app forced update
-        // Remove all old annotations
+    NSInteger zl = [FTDataManager calculateZoomFactorForVenueSet:self.venues forLocation:self.mapView.userLocation.location];
+    [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate zoomLevel:zl animated:YES];
+    
+    // Remove all old annotations
     @synchronized(self){
         NSMutableArray * wiped = [self.mapView.annotations mutableCopy];
         [wiped removeObject:self.mapView.userLocation];
         [self.mapView removeAnnotations:wiped];
+        [wiped release];
     }
-        
-        // Show only those annotations that have valid (online) icon
-        __block BOOL isSpecial;
-        __block NSString *iconPath;
-        
-        NSNumber *tmp;
     
-        for (__block NSDictionary *venue in self.venues){
-            tmp = [venue valueForKeyPath:kFSQDicVenueSpecials];
-            isSpecial = (tmp && [tmp integerValue] > 0);
+    // Show only those annotations that have valid (online) icon
+    __block BOOL isSpecial;
+    __block NSString *iconPath;
+    
+    NSNumber *tmp;
+    
+    for (__block NSDictionary *venue in self.venues){
+        tmp = [venue valueForKeyPath:kFSQDicVenueSpecials];
+        isSpecial = (tmp && [tmp integerValue] > 0);
+        
+        iconPath = [FTDataManager iconURLForImageType:FSQICONTP_ANNOTATION foreground:YES forVenue:venue];
+        if (iconPath){
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:iconPath]];
+            AFImageRequestOperation *operation = [AFImageRequestOperation
+                                                  imageRequestOperationWithRequest:request
+                                                  success:^(UIImage *image) {
+                                                      if (image){
+                                                          // Create annotation
+                                                          CLLocationDegrees lat = [(NSNumber*)[venue valueForKeyPath:kFSQDicVenueLatitude] doubleValue];
+                                                          CLLocationDegrees lng = [(NSNumber*)[venue valueForKeyPath:kFSQDicVenueLongitude] doubleValue];
+                                                          
+                                                          if ([FTUtilities areValidLatitude:lat longitude:lng]){
+                                                              FTAnnotation *point = [[FTAnnotation alloc] initWithType:(isSpecial ? FSQANNTP_SPECIAL : FSQANNTP_REGULAR)
+                                                                                                               iconURL:iconPath
+                                                                                                                 image:image
+                                                                                                            coordinate:CLLocationCoordinate2DMake(lat, lng)];
+                                                              
+                                                              [self.mapView addAnnotation:point];
+                                                              
+                                                              [point release];
+                                                          }
+                                                      }
+                                                      
+                                                  }];
             
-            iconPath = [FTDataManager iconURLForImageType:FSQICONTP_ANNOTATION foreground:YES forVenue:venue];
-            if (iconPath){
-                [[[[UIImageView alloc] init] autorelease] setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:iconPath]]
-                            placeholderImage:nil
-                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                         if (image){                                             
-                                             // Create annotation
-                                             CLLocationDegrees lat = [(NSNumber*)[venue valueForKeyPath:kFSQDicVenueLatitude] doubleValue];
-                                             CLLocationDegrees lng = [(NSNumber*)[venue valueForKeyPath:kFSQDicVenueLongitude] doubleValue];
-                                             
-                                             if ([FTUtilities areValidLatitude:lat longitude:lng]){
-                                                 FTAnnotation *point = [[FTAnnotation alloc] initWithType:(isSpecial ? FSQANNTP_SPECIAL : FSQANNTP_REGULAR)
-                                                                                                  iconURL:iconPath
-                                                                                                    image:image
-                                                                                               coordinate:CLLocationCoordinate2DMake(lat, lng)];
-                                                 
-                                                 [self.mapView addAnnotation:point];
-
-                                                 [point release];
-                                             }
-                                         }
-                                     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                         NSLog(@"ERR: Failed to load image for annotation");
-                                     }];
-            }
+            [[FTDataManager ftOperationQueue] addOperation:operation];
         }
-    //} //@synch
+    }
 }
 
 #pragma mark -
@@ -192,6 +196,8 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    [_refreshHeaderView setHidden:(!self.venues && [FTDataManager isNetworkAccessible])];   // first launch in session
+    
     return (self.venues ? [self.venues count] : ([FTDataManager isNetworkAccessible] ? 1 : 0));
 }
 
@@ -234,6 +240,7 @@
         [cell setBackgroundView:[[[UIImageView alloc] initWithImage:rowBackground] autorelease]];
         [cell setSelectedBackgroundView:[[[UIImageView alloc] initWithImage:selectionBackground] autorelease]];
         
+        // If venue IDs are the same for the cell, category image will not be updated
         [cell updateWithVenueData:[self.venues objectAtIndex:indexPath.row]];
         
         return cell;
@@ -273,6 +280,10 @@
 
 - (void) reloadTableViewDataSource
 {
+    if (_reloading){
+        return;
+    }
+    
 	_reloading = YES;
     
     [FTDataManager getVenuesForLocationCoordinate:self.lastKnownCoordinate
@@ -356,7 +367,7 @@
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"app-bg-pattern.png"]];
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,1.0f,1.0f)];
+    self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,1.0f,1.0f)] autorelease];
     
     if (_refreshHeaderView == nil) {
 		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
@@ -385,14 +396,13 @@
      setBackgroundImage:[[UIImage imageNamed:@"cancel-bg-pressed.png"] resizableImageWithCapInsets:insets]
      forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
     
-    /*
-     // These 3 do not prevent FULLY from mapView interaction, thus useless
-    self.mapView.userInteractionEnabled = NO;
-    self.mapView.zoomEnabled = NO;
-    self.mapView.scrollEnabled = NO;
-     */
+// These 3 do not prevent FULLY from mapView interaction, thus useless:
+//    self.mapView.userInteractionEnabled = NO;
+//    self.mapView.zoomEnabled = NO;
+//    self.mapView.scrollEnabled = NO;
+     
     self.mapView.showsUserLocation = YES;
-    self.mapView.userTrackingMode = YES;
+    self.mapView.userTrackingMode = MKUserTrackingModeNone;
     
     // This trick is used to prohibit ANY interaction or UI repsonses with/from mapView.
     //      User cannot tap, pan, zoom and cannot invoke callout for "Current Location" (which most f*** damn weird)

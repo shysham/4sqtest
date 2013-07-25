@@ -76,6 +76,7 @@ typedef enum _FTFSQAPIICONTYPE {
 #define FT_APPRNS_PULL2REFRESH_SLIDE_TIME           (.3f)
 #define FT_APPRNS_SEARCHBAR_ICON_X_OFFSET           (-12.f)
 #define FT_APPRNS_SEARCHBAR_TEXT_X_OFFSET           (-6.f)
+#define FT_APPRNS_LOCATION_NEAR_RADIUS              (1500)
 
 #define FT_APPRNS_VENUE_CELL_TEXT_SPACING           (4.f)
 #define FT_APPRNS_VENUE_NAME_FONT_NAME              @"Helvetica"
@@ -106,6 +107,10 @@ typedef enum _FTFSQAPIICONTYPE {
 #define FT_DATA_CATEGORIES_EXPIRATION_PERIOD        (7)     // 7 days max by default, as recommended by 4sq (https://developer.foursquare.com/docs/venues/categories)
 #define kFTCategoriesLastUpdateTimestamp            @"kFTCategoriesLastUpdateTimestamp"
 #define FT_DATA_CATEGORIES_LOCAL_FILE_NAME          @"categories.txt"
+
+
+// System
+#define FT_SYS_MAX_CONCURRENT_OPERATIONS            (10)
 
 
 // Common
