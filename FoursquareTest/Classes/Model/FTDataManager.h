@@ -23,9 +23,10 @@
 
 // Aux yet app-specific methods (that's why they're not in FTUtilities)
 //+ (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType withBaseURL:(NSString*)baseURL;   //OBSOLETE
-+ (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType forVenue:(NSDictionary*)aVenue;
++ (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType foreground:(BOOL)isFG forVenue:(NSDictionary*)aVenue;
 
 // Other
 + (NSArray*) supportedLocalizationCodes;
++ (BOOL) isNetworkAccessible;
 
 @end

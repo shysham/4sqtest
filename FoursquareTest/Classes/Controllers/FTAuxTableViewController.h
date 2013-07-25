@@ -12,6 +12,8 @@
 @interface FTAuxTableViewController : UITableViewController {
 }
 
+@property (nonatomic, assign) UIViewController *owner;
 @property (nonatomic, assign) CLLocationCoordinate2D lastKnownCoordinate;
 
+- (void) reloadDataForceEvenIfHasData:(BOOL)force;
 @end

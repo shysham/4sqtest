@@ -65,6 +65,7 @@ typedef enum _FTFSQAPIICONTYPE {
 
 
 // Appearance
+#define FT_APPRNS_CELL_LOADING_HEIGHT               (30.f)
 #define FT_APPRNS_CELL_HEIGHT                       (70.f)
 #define FT_APPRNS_MAP_HEIGHT                        (200.f)
 #define FT_APPRNS_CANCEL_BUTTON_INSET               (5.f)
@@ -89,6 +90,13 @@ typedef enum _FTFSQAPIICONTYPE {
 #define FT_APPRNS_ANNOTATION_IMAGE_HEIGHT           (32.f)
 #define FT_APPRNS_ANNOTATION_SPECIAL_IMAGE_NAME     @"mappin-orange.png"
 #define FT_APPRNS_ANNOTATION_REGULAR_IMAGE_NAME     @"mappin-blue.png"
+
+#define FT_APPRNS_NOTIFICATION_MSG_INDICATOR_TAG    888
+#define FT_APPRNS_NOTIFICATION_TEXT_FONT_SIZE       (14.f)
+#define FT_APPRNS_NOTIFICATION_MIN_TEXT_FONT_SIZE   (10.f)
+#define FT_APPRNS_NOTIFICATION_TEXT_FONT_NAME       @"Gotham-Book"
+#define FT_APPRNS_NOTIFICATION_SHOW_DURATION        (4.f)
+#define FT_APPRNS_NOTIFICATION_DISAPPEARANCE_TIME   (1.f)
 
 
 // Cache-related

@@ -9,6 +9,7 @@
 #import "FTAppDelegate.h"
 #import "FTViewController.h"
 #import "FTDataManager.h"
+#import "Reachability.h"
 
 @implementation FTAppDelegate
 
@@ -26,6 +27,10 @@
 {
     [application setStatusBarHidden:NO];
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    
+    // Scheduling necessary notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(internetConnectionStatusChanged)
+                                                 name:kReachabilityChangedNotification object:nil];
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
@@ -64,7 +69,19 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
+// Aux stuff
+- (void) internetConnectionStatusChanged
+{
+    if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable){
+        [FTUtilities showConnectionLostMessageInView:self.navigationController.view];
+    }
+    else {
+        // Remove "connection lost" notifiaction immediately (if it is visible; otherwise – no-op)
+        [FTUtilities removeNotificationFromView:self.navigationController.view];
+    }
 }
 
 @end

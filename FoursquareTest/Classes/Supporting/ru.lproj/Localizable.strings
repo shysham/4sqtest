@@ -12,3 +12,5 @@
 "skTitleDefaultDummy" = "Я простой текст-заглушка";
 "skTitleKilometers" = "км";
 "skTitleMeters" = "м";
+"skTitleConnectionLost" = "Вероятно, соединение с Интернетом прервано.";
+"skTitleLoading" = "Загрузка...";

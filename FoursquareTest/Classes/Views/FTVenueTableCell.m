@@ -130,6 +130,8 @@
     // Special marker
     NSNumber *spec = [aVenue valueForKeyPath:kFSQDicVenueSpecials];
     self.imgvSpecial.hidden = (!(spec && [spec integerValue] > 0));
+    
+    self.imgvCategory.backgroundColor = [UIColor clearColor];
 }
 
 /*

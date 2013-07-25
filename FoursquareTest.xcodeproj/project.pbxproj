@@ -108,6 +108,8 @@
 		5FDAD2D1179FC37D00D81935 /* FTAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D0179FC37C00D81935 /* FTAnnotation.m */; };
 		5FDAD2D417A0468700D81935 /* FTAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D317A0468700D81935 /* FTAnnotationView.m */; };
 		5FDAD2D717A0840600D81935 /* FTObjVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D617A0840400D81935 /* FTObjVenue.m */; };
+		5FDAD2DA17A0DC4000D81935 /* alert-warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D817A0DC4000D81935 /* alert-warning.png */; };
+		5FDAD2DB17A0DC4000D81935 /* alert-warning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD2D917A0DC4000D81935 /* alert-warning@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -202,8 +204,8 @@
 		5FDAD287179F26BF00D81935 /* table-cell-single.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table-cell-single.png"; sourceTree = "<group>"; };
 		5FDAD288179F26BF00D81935 /* table-cell-top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table-cell-top.png"; sourceTree = "<group>"; };
 		5FDAD28F179F334C00D81935 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5FDAD291179F337A00D81935 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		5FDAD293179F337F00D81935 /* ru */ = {isa = PBXFileReference; lastKnownFileType = file; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5FDAD291179F337A00D81935 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5FDAD293179F337F00D81935 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5FDAD294179F34DD00D81935 /* cancel-bg-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel-bg-pressed.png"; sourceTree = "<group>"; };
 		5FDAD295179F34DD00D81935 /* cancel-bg-pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel-bg-pressed@2x.png"; sourceTree = "<group>"; };
 		5FDAD296179F34DD00D81935 /* cancel-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel-bg.png"; sourceTree = "<group>"; };
@@ -241,6 +243,8 @@
 		5FDAD2D317A0468700D81935 /* FTAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTAnnotationView.m; sourceTree = "<group>"; };
 		5FDAD2D517A0840400D81935 /* FTObjVenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTObjVenue.h; sourceTree = "<group>"; };
 		5FDAD2D617A0840400D81935 /* FTObjVenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTObjVenue.m; sourceTree = "<group>"; };
+		5FDAD2D817A0DC4000D81935 /* alert-warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert-warning.png"; sourceTree = "<group>"; };
+		5FDAD2D917A0DC4000D81935 /* alert-warning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert-warning@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -340,6 +344,8 @@
 		5FDAD1B6179ECEAC00D81935 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5FDAD2D817A0DC4000D81935 /* alert-warning.png */,
+				5FDAD2D917A0DC4000D81935 /* alert-warning@2x.png */,
 				5FDAD2BB179F891600D81935 /* category-none.png */,
 				5FDAD2BC179F891600D81935 /* category-none@2x.png */,
 				5FDAD2B7179F873C00D81935 /* venue-img-bg.png */,
@@ -655,6 +661,8 @@
 				5FDAD2CC179FBB4600D81935 /* Somewhere in Vancouver.gpx in Resources */,
 				5FDAD2CD179FBB4600D81935 /* Озерск, Иртяшская.gpx in Resources */,
 				5FDAD2CE179FBB4600D81935 /* Bresje, Jagodina.gpx in Resources */,
+				5FDAD2DA17A0DC4000D81935 /* alert-warning.png in Resources */,
+				5FDAD2DB17A0DC4000D81935 /* alert-warning@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,5 +16,12 @@
 + (BOOL) existsInDocumentsFileWithName:(NSString*)name;
 + (NSString*) encodeURLString:(NSString *)rawString;
 + (NSString*) niceReadableDistanceWithMeters:(CGFloat)meters;
++ (CGSize) scaleSize:(CGSize)size proportionalToSize:(CGSize)toSize;
+
++ (void) showNotificationOnView:(UIView*)aView withMessage:(NSString*)aMessage image:(UIImage*)anImage
+                           size:(CGSize)aSize backColor:(UIColor*)aColor;
++ (void) removeNotificationFromView:(UIView*)aView;
++ (void) showConnectionLostMessageInView:(UIView*)aView;
+
 
 @end

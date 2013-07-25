@@ -8,6 +8,7 @@
 
 #import "FTDataManager.h"
 #import "AFNetworking.h"
+#import "Reachability.h"
 
 static FTDataManager *sharedDataManager = nil;
 
@@ -132,11 +133,10 @@ static FTDataManager *sharedDataManager = nil;
 }
 */
 
-+ (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType forVenue:(NSDictionary*)aVenue
++ (NSString*) iconURLForImageType:(FTFSQAPIICONTYPE)imgType foreground:(BOOL)isFG forVenue:(NSDictionary*)aVenue
 {
-    // Makes URLs only background images (i.e. with "bg" prefix)
     if (!aVenue)
-        return nil;     // default placeholder will be used
+        return nil;
     
     NSArray *cats = [aVenue objectForKey:kFSQDicVenueCategories];
     if (!cats || [cats count] == 0)
@@ -161,14 +161,14 @@ static FTDataManager *sharedDataManager = nil;
     NSString *specifier = @"";
     switch (imgType){
         case FSQICONTP_ANNOTATION:
-            specifier = (isRetina ? @"_bg_64" : @"_bg_32");
+            specifier = (isRetina ? @"64" : @"32");
             break;
             
         default:        // this one includes FSQICONTP_DESCRIPTION
-            specifier = (isRetina ? @"_bg_44" : @"_bg_88");
+            specifier = (isRetina ? @"44" : @"88");
     }
     
-    NSString *ret = [[[NSString alloc] initWithFormat:@"%@%@%@", imgPrefix, specifier, imgSfx] autorelease];
+    NSString *ret = [[[NSString alloc] initWithFormat:@"%@%@%@%@", imgPrefix, (isFG ? @"" : @"bg_"), specifier, imgSfx] autorelease];
     
     NSLog(@"FTDataManager::iconURL2 prepared as: %@", ret);
     
@@ -178,6 +178,11 @@ static FTDataManager *sharedDataManager = nil;
 + (NSArray*) supportedLocalizationCodes
 {
     return @[@"en", @"ru"];     // English, Russian
+}
+
++ (BOOL) isNetworkAccessible
+{
+    return ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] != NotReachable);
 }
 
 + (void) aux_downloadCategoriesWithBlock:(void(^)(NSDictionary* info, NSError *err))block

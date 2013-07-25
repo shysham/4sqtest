@@ -22,10 +22,11 @@
 
 - (void) setupScreen;
 - (void) cleanUp;
+- (UITableViewCell*) getLoadingCell;
 @end
 
 @implementation FTAuxTableViewController
-@synthesize venues = _venues, lastKnownCoordinate = _lastKnownCoordinate;
+@synthesize venues = _venues, owner = _owner, lastKnownCoordinate = _lastKnownCoordinate;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -85,66 +86,74 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return (self.venues ? [self.venues count] : 0);
+    return (self.venues ? [self.venues count] : ([FTDataManager isNetworkAccessible] ? 1 : 0));
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{    
-    NSString *cellID;
-    NSInteger sectionRows = [tableView numberOfRowsInSection:[indexPath section]];
-    NSInteger row = [indexPath row];
-    
-    if (row == 0 && row == sectionRows - 1)         cellID = @"cellIDSingle";
-    else if (row == 0)                              cellID = @"cellIDTop";
-    else if (row == sectionRows - 1)                cellID = @"cellIDBottom";
-    else                                            cellID = @"cellIDMiddle";
-    
-    FTVenueTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (cell == nil) {
-        //cell = [[[FTVenueTableCell alloc] initWithVenueData:nil reuseIdentifier:cellID] autorelease];
+{
+    if (self.venues && [self.venues count]){
+        NSString *cellID;
+        NSInteger sectionRows = [tableView numberOfRowsInSection:[indexPath section]];
+        NSInteger row = [indexPath row];
         
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"FTVenueTableCell" owner:self options:nil];
-        cell = [topLevelObjects objectAtIndex:0];
+        /*
+        if (row == 0 && row == sectionRows - 1)         cellID = @"cellIDSingle";
+        else if (row == 0)                              cellID = @"cellIDTop";
+        else if (row == sectionRows - 1)                cellID = @"cellIDBottom";
+        else                                            cellID = @"cellIDMiddle";
+         */
         
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        
-        UIImage *rowBackground;
-        UIImage *selectionBackground;
-        
-        if (row == 0 && row == sectionRows - 1)
-        {
-            rowBackground = [UIImage imageNamed:@"table-cell-single.png"];
-            selectionBackground = [UIImage imageNamed:@"table-cell-single-sel.png"];
+        FTVenueTableCell *cell = nil;//[tableView dequeueReusableCellWithIdentifier:cellID];
+        if (cell == nil) {
+            //cell = [[[FTVenueTableCell alloc] initWithVenueData:nil reuseIdentifier:cellID] autorelease];
+            
+            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"FTVenueTableCell" owner:self options:nil];
+            cell = [topLevelObjects objectAtIndex:0];
+            
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            
+            UIImage *rowBackground;
+            UIImage *selectionBackground;
+            
+            if (row == 0 && row == sectionRows - 1)
+            {
+                rowBackground = [UIImage imageNamed:@"table-cell-single.png"];
+                selectionBackground = [UIImage imageNamed:@"table-cell-single-sel.png"];
+            }
+            else if (row == 0)
+            {
+                rowBackground = [UIImage imageNamed:@"table-cell-top.png"];
+                selectionBackground = [UIImage imageNamed:@"table-cell-top-sel.png"];
+            }
+            else if (row == sectionRows - 1)
+            {
+                rowBackground = [UIImage imageNamed:@"table-cell-bottom.png"];
+                selectionBackground = [UIImage imageNamed:@"table-cell-bottom-sel.png"];
+            }
+            else
+            {
+                rowBackground = [UIImage imageNamed:@"table-cell-middle.png"];
+                selectionBackground = [UIImage imageNamed:@"table-cell-middle-sel.png"];
+            }
+            
+            [cell setBackgroundView:[[[UIImageView alloc] initWithImage:rowBackground] autorelease]];
+            [cell setSelectedBackgroundView:[[[UIImageView alloc] initWithImage:selectionBackground] autorelease]];
         }
-        else if (row == 0)
-        {
-            rowBackground = [UIImage imageNamed:@"table-cell-top.png"];
-            selectionBackground = [UIImage imageNamed:@"table-cell-top-sel.png"];
-        }
-        else if (row == sectionRows - 1)
-        {
-            rowBackground = [UIImage imageNamed:@"table-cell-bottom.png"];
-            selectionBackground = [UIImage imageNamed:@"table-cell-bottom-sel.png"];
-        }
-        else
-        {
-            rowBackground = [UIImage imageNamed:@"table-cell-middle.png"];
-            selectionBackground = [UIImage imageNamed:@"table-cell-middle-sel.png"];
-        }
         
-        [cell setBackgroundView:[[[UIImageView alloc] initWithImage:rowBackground] autorelease]];
-        [cell setSelectedBackgroundView:[[[UIImageView alloc] initWithImage:selectionBackground] autorelease]];
+        [cell updateWithVenueData:[self.venues objectAtIndex:indexPath.row]];
+        
+        return cell;
     }
-    
-    [cell updateWithVenueData:[self.venues objectAtIndex:indexPath.row]];
-    
-    return cell;
+    else {
+        // Show loading indicator
+        return [self getLoadingCell];
+    }
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return FT_APPRNS_CELL_HEIGHT;
+    return ((self.venues && [self.venues count]) ? FT_APPRNS_CELL_HEIGHT : FT_APPRNS_CELL_LOADING_HEIGHT);
 }
 
 #pragma mark - Table view delegate
@@ -158,6 +167,13 @@
 
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
+
+- (void) reloadDataForceEvenIfHasData:(BOOL)force
+{
+    if ((force || !self.venues || [self.venues count]) && [FTDataManager isNetworkAccessible]){
+        [self reloadTableViewDataSource];
+    }
+}
 
 - (void) reloadTableViewDataSource
 {
@@ -184,6 +200,12 @@
     _reloading = NO;
 }
 
+- (void) cancelledLoadingTableViewData
+{
+    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    _reloading = NO;
+}
+
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
@@ -201,9 +223,15 @@
 #pragma mark -
 #pragma mark EGORefreshTableHeaderDelegate Methods
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
-{	
-	[self reloadTableViewDataSource];
-	///[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+{
+    if (![FTDataManager isNetworkAccessible]){
+        // ** MUST ** use delay, otherwise we'll get issue with the pull-2-refresh indicator staying visible. Known issue of EGO pull-2-refresh.
+        [self performSelector:@selector(cancelledLoadingTableViewData) withObject:nil afterDelay:1.f];
+        [FTUtilities showConnectionLostMessageInView:self.owner.navigationController.view];
+    }
+    else {
+        [self reloadTableViewDataSource];
+    }
 }
 
 - (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
@@ -217,6 +245,8 @@
 - (void) setupScreen
 {
     self.tableView.backgroundView = nil;
+    [self.tableView setSeparatorColor:[UIColor clearColor]];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"app-bg-pattern.png"]];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f,0.0f,1.0f,1.0f)];
     
@@ -232,11 +262,53 @@
 
 - (void) cleanUp
 {
+    self.owner = nil;
+    
     [_venues release];  _venues = nil;
     
     _refreshHeaderView = nil;
     self.tableView.delegate = nil;
     self.tableView.dataSource = nil;
+}
+
+- (UITableViewCell*) getLoadingCell
+{
+    // Making this one manually
+    
+    NSString *loadingCellID = @"loadingCellID";
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:loadingCellID];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:loadingCellID] autorelease];
+
+        NSString *title = NSLocalizedString(@"skTitleLoading", nil);
+        UIFont *font = [UIFont fontWithName:FT_APPRNS_VENUE_INFO_FONT_NAME size:14.f];
+        CGSize sz = [title sizeWithFont:font
+                                    constrainedToSize:CGSizeMake(100, 100)
+                                        lineBreakMode:UILineBreakModeWordWrap];
+        
+        UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0.f, 0.f, sz.width, sz.height)];
+        lbl.center = cell.center;
+        lbl.text = title;
+        lbl.font = font;
+        lbl.textColor = FT_APPRNS_VENUE_INFO_FONT_COLOR;
+        lbl.textAlignment = UITextAlignmentCenter;
+        lbl.backgroundColor = [UIColor clearColor];
+        cell.backgroundView = nil;
+        cell.backgroundColor = [UIColor clearColor];
+        [cell.contentView addSubview:lbl];
+        
+        CGFloat spacing = 10.f, actSize = 20.f;
+        
+        UIActivityIndicatorView *actView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [actView setFrame:CGRectMake(lbl.center.x - sz.width / 2.f - spacing - actSize, lbl.center.y - actSize / 2.f, actSize, actSize)];
+        [actView startAnimating];
+        [cell.contentView addSubview:actView];
+
+        [actView release];
+        [lbl release];
+    }
+    
+    return cell;
 }
 
 @end

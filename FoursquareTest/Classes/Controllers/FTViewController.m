@@ -9,9 +9,11 @@
 #import "FTViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "MKMapView+Zooming.h"
+#import "Reachability.h"
+#import "FTDataManager.h"
 
 @interface FTViewController () <UISearchDisplayDelegate, UISearchBarDelegate, MKMapViewDelegate>
-- (void) setupScreen;
+- (void) setup;
 - (void) cleanUp;
 
 - (void) cancelPressed:(id)sender;
@@ -31,7 +33,10 @@
 {
     [super viewDidLoad];
     
-    [self setupScreen];
+    // We'll need this to force reload when connection appears after break
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(internetConnectionStatusChanged)
+                                                 name:kReachabilityChangedNotification object:nil];
+    [self setup];
 }
 
 // For iOS < 6.0
@@ -45,6 +50,8 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self.auxTableVC reloadDataForceEvenIfHasData:YES];   // as far as it is nested
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,7 +91,12 @@
     if (!userLocation)
         return;
     
+    CLLocationCoordinate2D coord = userLocation.coordinate;
+    //if (coord.latitude > 90.f || coord.latitude < -90.f || coord.longitude > 180.f || coord.longitude < -180.f)
+     //   return;
+    
     [self.auxTableVC setLastKnownCoordinate:userLocation.coordinate];
+    [self.auxTableVC reloadDataForceEvenIfHasData:NO];  // location change does not force venue list update. User must pull2refresh.
     
     [mapView setCenterCoordinate:userLocation.coordinate zoomLevel:14 animated:YES];
     
@@ -113,7 +125,7 @@
 
 #pragma mark -
 #pragma mark Service
-- (void) setupScreen
+- (void) setup
 {    
     [self.navigationController setNavigationBarHidden:NO];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationbar.png"] forBarMetrics:UIBarMetricsDefault];
@@ -123,6 +135,7 @@
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(cancelPressed:)];
+    self.auxTableVC.owner = self;
     
     UIEdgeInsets insets = UIEdgeInsetsMake(.0, FT_APPRNS_SEARCHFIELD_INSET, .0, FT_APPRNS_SEARCHFIELD_INSET);
     [[UISearchBar appearance] setBackgroundColor:[UIColor clearColor]];
@@ -164,8 +177,17 @@
 }
  */
 
+- (void) internetConnectionStatusChanged
+{
+    if ([FTDataManager isNetworkAccessible]){
+        [self.auxTableVC reloadDataForceEvenIfHasData:YES];     // connection problems force reloading
+    }
+}
+
 - (void) cleanUp
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+    
     _mapView.delegate = nil;
     
     [_searchBar release];       _searchBar = nil;
